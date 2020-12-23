@@ -14,7 +14,7 @@ export default {
   defaults: {
     from: {
       email: 'djamilsonapp@gmail.com',
-      name: 'GoBarber',
+      name: 'Concurso',
     },
   },
 } as IMailConfig;

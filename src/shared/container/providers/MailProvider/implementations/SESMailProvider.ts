@@ -55,6 +55,7 @@ export default class SESMailProvider implements IMailProvider {
         html: await this.mailTemplateProvider.parse(templateData),
       },
       (err, info) => {
+        console.log('===>> info', info);
         console.log('===>> error', err);
       },
     );

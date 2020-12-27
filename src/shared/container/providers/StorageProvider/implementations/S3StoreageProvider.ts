@@ -22,9 +22,9 @@ class S3StorageProvider implements IStorageProvider {
   }
 
   public async saveFile(file: string): Promise<string> {
-   
     const originalPath = path.resolve(uploadConfig.tmpFolder, file);
-
+    console.log('Vou para o S3', file);
+    console.log('originalPath', originalPath);
     const ContentType = mime.getType(originalPath);
 
     if (!ContentType) {
@@ -41,9 +41,20 @@ class S3StorageProvider implements IStorageProvider {
         Body: fileContent,
         ContentType,
       })
-      .promise();
+      .promise()
+      .catch(err => {
+        console.log('Upload failed:', err);
+      });
 
-    await fs.promises.unlink(originalPath);
+    console.log('Passou do S3');
+    /* .then(function (data) {
+        console.log(`Successfully uploaded to ${data}`);
+      })
+      .catch(function (err) {
+        console.error(err, err.stack);
+      }) */ await fs.promises.unlink(
+      originalPath,
+    );
 
     return file;
   }

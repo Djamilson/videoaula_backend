@@ -8,10 +8,10 @@ export default class CourseImageController {
   public async update(req: Request, res: Response): Promise<Response> {
     const updateCourseImage = container.resolve(UpdateCourseImageService);
 
-    // console.log('Dados da Image:', req.user.id, req.file.filename);
+    const { id } = req.body;
 
     const user = await updateCourseImage.execute({
-      course_id: req.user.id,
+      course_id: id,
       imageFilename: req.file.filename,
     });
 

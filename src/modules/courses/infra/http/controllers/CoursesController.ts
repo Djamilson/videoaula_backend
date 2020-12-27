@@ -5,16 +5,17 @@ import { container } from 'tsyringe';
 import CreateCourseService from '@modules/courses/services/CreateCourseService';
 import FindCourseService from '@modules/courses/services/FindCourseService';
 import ListCoursesService from '@modules/courses/services/ListCoursesService';
+import UpdateCourseService from '@modules/courses/services/UpdateCoursesService';
 
 export default class CoursesController {
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async show(request: Request, res: Response): Promise<Response> {
     const { id } = request.params;
 
     const findCourse = container.resolve(FindCourseService);
 
     const course = await findCourse.execute({ id });
 
-    return response.json(course);
+    return res.json(classToClass(course));
   }
 
   public async index(req: Request, res: Response): Promise<Response> {
@@ -36,11 +37,8 @@ export default class CoursesController {
 
       const { filename: image } = req.file;
 
-      console.log('=>>>:', name, price, stock);
-      console.log('image::', image);
       const createCourse = container.resolve(CreateCourseService);
       // dependencia
-
       const course = await createCourse.execute({
         name,
         price,
@@ -48,7 +46,24 @@ export default class CoursesController {
         stock,
       });
 
-      console.log('fim:::');
+      return res.json(classToClass(course));
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    try {
+      const { name, price, stock, id } = req.body;
+
+      const updateCourse = container.resolve(UpdateCourseService);
+
+      const course = await updateCourse.execute({
+        name,
+        price,
+        stock,
+        id,
+      });
 
       return res.json(classToClass(course));
     } catch (error) {

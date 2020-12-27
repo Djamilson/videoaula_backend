@@ -8,7 +8,6 @@ import uploadConfig from '@config/upload';
 
 import CourseImageController from '../controllers/CourseImageController';
 import CoursesController from '../controllers/CoursesController';
-
 import CoursesSelectController from '../controllers/CoursesSelectController';
 
 const coursesRouter = Router();
@@ -19,7 +18,7 @@ const courseImageController = new CourseImageController();
 
 const upload = multer(uploadConfig.multer);
 
-//tem que ser nessa order para não dar erro
+// tem que ser nessa order para não dar erro
 coursesRouter.get('/select', coursesSelectController.index);
 coursesRouter.get('/', coursesController.index);
 coursesRouter.get('/:id', coursesController.show);
@@ -32,12 +31,24 @@ coursesRouter.post(
     [Segments.BODY]: {
       name: Joi.string(),
       price: Joi.number(),
-      file: Joi.string(),
       stock: Joi.number(),
     },
   }),
   upload.single('file'),
   coursesController.create,
+);
+
+coursesRouter.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string(),
+      price: Joi.number(),
+      stock: Joi.number(),
+      id: Joi.string(),
+    },
+  }),
+  coursesController.update,
 );
 
 coursesRouter.patch(

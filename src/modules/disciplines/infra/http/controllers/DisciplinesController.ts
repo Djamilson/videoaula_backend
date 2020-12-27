@@ -1,19 +1,21 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import CreateDisciplineService from '@modules/disciplines/services/CreateDisciplineService';
+import FindDisciplineService from '@modules/disciplines/services/FindDisciplineService';
+import ListDisciplinesAllService from '@modules/disciplines/services/ListDisciplinesAllService';
 import UpdateDisciplineService from '@modules/disciplines/services/UpdateDisciplineService';
 
-import ListDisciplinesAllService from '@modules/disciplines/services/ListDisciplinesAllService';
-
 export default class DisciplinesController {
-  public async show(request: Request, response: Response): Promise<Response> {
-    const { zip_code } = request.params;
+  public async show(request: Request, res: Response): Promise<Response> {
+    const { id } = request.params;
 
-    const user_id = request.user.id;
+    const findDiscipline = container.resolve(FindDisciplineService);
 
-    return response.json({ fee: true });
+    const discipline = await findDiscipline.execute({ id });
+
+    return res.json(classToClass(discipline));
   }
 
   public async index(request: Request, response: Response): Promise<Response> {

@@ -1,6 +1,4 @@
 import { Expose } from 'class-transformer';
-
-
 import {
   Entity,
   Column,
@@ -10,9 +8,10 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import uploadConfig from '@config/upload';
 import CourseDiscipline from '@modules/disciplines/infra/typeorm/entities/CourseDiscipline';
 import OrdersCourses from '@modules/orders/infra/typeorm/entities/OrdersCourses';
+
+import uploadConfig from '@config/upload';
 
 @Entity('courses')
 class Course {

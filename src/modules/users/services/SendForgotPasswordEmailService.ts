@@ -45,7 +45,7 @@ class SendForgotPasswordEmailService {
         name: userExists.person.name,
         email: userExists.person.email,
       },
-      subject: '[GoBarber] Recuperação de senha',
+      subject: '[Concurso] Recuperação de senha',
       templateData: {
         file: forgotPasswordTemplate,
         variables: {

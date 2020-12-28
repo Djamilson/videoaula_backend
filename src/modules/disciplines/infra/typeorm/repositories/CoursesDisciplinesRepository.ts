@@ -27,8 +27,6 @@ class CoursesDisciplinesRepository implements ICoursesDisciplinesRepository {
       where: { course_id, discipline_id },
     });
 
-    console.log('Passou da busca:', courseDiscipline);
-
     return courseDiscipline;
   }
 

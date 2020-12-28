@@ -1,19 +1,13 @@
 import { injectable, inject } from 'tsyringe';
 
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import AppError from '@shared/errors/AppError';
 
-import CourseDiscipline from '../infra/typeorm/entities/CourseDiscipline';
+import Movie from '../infra/typeorm/entities/Movie';
 import IMoviesRepository from '../repositories/IMoviesRepository';
-
-import ICoursesDisciplinesRepository from '../repositories/ICoursesDisciplinesRepository';
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-import IThemesRepository from '../repositories/IThemesRepository';
 
 interface IRequest {
   title: string;
-  course_id: string;
-  discipline_id: string;
-  theme_id: string;
   filename: string;
 }
 
@@ -23,45 +17,27 @@ class CreateMovieService {
     @inject('MoviesRepository')
     private moviesRepository: IMoviesRepository,
 
-    @inject('ThemesRepository')
-    private themesRepository: IThemesRepository,
-
-    @inject('CoursesDisciplinesRepository')
-    private coursesDisciplinesRepository: ICoursesDisciplinesRepository,
-
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({
-    title,
-    course_id,
-    discipline_id,
-    theme_id,
-    filename,
-  }: IRequest): Promise<CourseDiscipline> {
+  public async execute({ title, filename }: IRequest): Promise<Movie> {
+    console.log('Check', title, filename);
+
     const checkMovieExists = await this.moviesRepository.findByTitle(title);
 
     if (checkMovieExists) {
       throw new AppError('Movie already used.');
     }
 
-    const existsTheme = await this.themesRepository.findById(theme_id);
+    console.log('Fazendo a busca do theme', filename);
 
-    if (!existsTheme) {
-      throw new AppError('Theme not exists');
-    }
-
+    console.log('Vai criar o video na aws', filename);
     await this.storageProvider.saveFile(filename);
-
-    const { id } = await this.moviesRepository.create({
+    console.log('Criou o video na aws', filename);
+    const movie = await this.moviesRepository.create({
       title,
       movie: filename,
-    });
-
-    const movie = await this.coursesDisciplinesRepository.create({
-      course_id,
-      discipline_id,
     });
 
     return movie;

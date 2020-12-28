@@ -9,7 +9,7 @@ import IStorageProvider from '../models/IStorageProvider';
 
 // configure AWS SDK
 aws.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID_S3,
+  accessKeyId: process.env.WS_ACCESS_KEY_ID_S3,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_S3,
   region: process.env.AWS_DEFAULT_REGION,
 });
@@ -47,14 +47,8 @@ class S3StorageProvider implements IStorageProvider {
       });
 
     console.log('Passou do S3');
-    /* .then(function (data) {
-        console.log(`Successfully uploaded to ${data}`);
-      })
-      .catch(function (err) {
-        console.error(err, err.stack);
-      }) */ await fs.promises.unlink(
-      originalPath,
-    );
+
+    await fs.promises.unlink(originalPath);
 
     return file;
   }

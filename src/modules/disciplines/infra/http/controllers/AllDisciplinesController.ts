@@ -6,7 +6,9 @@ import AllDisciplinesService from '@modules/disciplines/services/AllDisciplinesS
 
 export default class AllDisciplinesController {
   public async index(req: Request, res: Response): Promise<Response> {
+    console.log('Passou');
     const listDisciplines = container.resolve(AllDisciplinesService);
+    console.log('Passou');
     const disciplines = await listDisciplines.execute();
 
     return res.json(classToClass(disciplines));

@@ -7,6 +7,7 @@ import Theme from '../entities/Theme';
 
 class ThemesRepository implements IThemesRepository {
   private ormRepository: Repository<Theme>;
+
   constructor() {
     this.ormRepository = getRepository(Theme);
   }
@@ -49,7 +50,9 @@ class ThemesRepository implements IThemesRepository {
   }
 
   public async findByTitle(theme: string): Promise<Theme | undefined> {
+    console.log(' fazendo a busca theme:', theme);
     const newTheme = await this.ormRepository.findOne({ where: { theme } });
+    console.log('Retorno theme fazendo a busca:', newTheme);
 
     return newTheme;
   }

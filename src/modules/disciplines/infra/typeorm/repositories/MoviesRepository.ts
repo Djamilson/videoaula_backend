@@ -3,11 +3,12 @@ import { getRepository, Repository } from 'typeorm';
 import ICreateMovieDTO from '@modules/disciplines/dtos/ICreateMovieDTO';
 import IMoviesRepository from '@modules/disciplines/repositories/IMoviesRepository';
 
-import Movie from '../entities/Movie';
 import CourseDiscipline from '../entities/CourseDiscipline';
+import Movie from '../entities/Movie';
 
 class MoviesRepository implements IMoviesRepository {
   private ormRepository: Repository<Movie>;
+
   private ormCourseDisciplineRepository: Repository<CourseDiscipline>;
 
   constructor() {

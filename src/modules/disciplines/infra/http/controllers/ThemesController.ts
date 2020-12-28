@@ -2,10 +2,10 @@ import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import UpdateThemeService from '@modules/disciplines/services/UpdateThemeService';
 import CreateThemeService from '@modules/disciplines/services/CreateThemeService';
 import SearchThemeForDisciplineIdService from '@modules/disciplines/services/SearchThemeForDisciplineIdService';
 import ThemesAllService from '@modules/disciplines/services/ThemesAllService';
+import UpdateThemeService from '@modules/disciplines/services/UpdateThemeService';
 
 export default class ThemesController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -42,7 +42,7 @@ export default class ThemesController {
 
       const theme = await createThemeService.execute({ ...req.body, filename });
 
-      return res.json(theme);
+      return res.json(classToClass(theme));
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }

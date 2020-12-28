@@ -2,9 +2,10 @@ import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import UpdateMovieService from '@modules/disciplines/services/UpdateMovieService';
-import CreateVidoService from '@modules/disciplines/services/CreateMovieService';
+import CreateMovieService from '@modules/disciplines/services/CreateMovieService';
 import SearchMovieForDisciplineIdService from '@modules/disciplines/services/SearchMovieForDisciplineIdService';
+import UpdateMovieService from '@modules/disciplines/services/UpdateMovieService';
+
 export default class MoviesController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { zip_code } = request.params;
@@ -30,7 +31,7 @@ export default class MoviesController {
 
   public async create(req: Request, res: Response): Promise<Response> {
     try {
-      const createMovieService = container.resolve(CreateVidoService);
+      const createMovieService = container.resolve(CreateMovieService);
 
       const { title, course_id, discipline_id, theme_id } = req.body;
       const { filename } = req.file;

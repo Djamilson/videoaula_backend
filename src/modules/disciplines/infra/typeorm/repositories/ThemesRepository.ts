@@ -19,10 +19,10 @@ class ThemesRepository implements IThemesRepository {
   }
 
   public async findAllThemesForDisciplineId(
-    discipline_id: string,
+    course_discipline_id: string,
   ): Promise<Theme[] | undefined> {
     const themes = await this.ormRepository.find({
-      where: { discipline_id },
+      where: { course_discipline_id },
       order: { created_at: 'DESC' },
     });
 

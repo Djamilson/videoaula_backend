@@ -7,7 +7,8 @@ interface IRequest {
 }
 
 interface IDiscipline {
-  id: string;
+  course_discipline_id: string;
+  discipline_id: string;
   name: string;
 }
 
@@ -26,11 +27,16 @@ class ListCourseDisciplineService {
     );
 
     const newList = coursesDisciplines?.map(p => {
-      return { id: p.discipline.id, name: p.discipline.name };
+      return {
+        course_discipline_id: p.id,
+        discipline_id: p.discipline.id,
+        name: p.discipline.name,
+      };
     });
 
     const uniqList = newList?.filter(
-      (s1, pos, arr) => arr.findIndex(s2 => s2.id === s1.id) === pos,
+      (s1, pos, arr) =>
+        arr.findIndex(s2 => s2.discipline_id === s1.discipline_id) === pos,
     );
 
     return uniqList;

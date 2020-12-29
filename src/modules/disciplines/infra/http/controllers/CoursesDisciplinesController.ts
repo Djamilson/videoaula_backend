@@ -8,7 +8,7 @@ import ListDisciplineService from '@modules/disciplines/services/ListDisciplineS
 export default class CoursesDisciplinesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { course_id } = request.params;
-    console.log('===', request.params);
+    console.log('=== Passou aqui', request.params);
 
     console.log('===>>>', course_id);
 

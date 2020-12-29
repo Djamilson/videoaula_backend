@@ -29,10 +29,12 @@ class ListCommentsByMovieIdService {
   public async execute({
     movie_id,
   }: IRequest): Promise<IListCommentDTO[] | undefined> {
+    console.log('estou::', movie_id);
     const newList = await this.commentsRepository.findAllCommentByMovieId(
       movie_id,
     );
 
+    console.log('movie_id:: passou ', movie_id);
     const serealizableComments = newList?.map((item: Comment) => {
       const comments = {
         id: item.id,

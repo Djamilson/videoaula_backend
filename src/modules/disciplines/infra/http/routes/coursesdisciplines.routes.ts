@@ -28,18 +28,6 @@ coursesDisciplinesRouter.post(
   coursesDisciplinesController.create,
 );
 
-/*
-coursesDisciplinesRouter.put(
-  '/',
-  celebrate({
-    [Segments.BODY]: {
-      discipline_id: Joi.string().required(),
-      course_id: Joi.string().required(),
-    },
-  }),
-  coursesDisciplinesController.update,
-); */
-
 // para o select dentro do menu aula, para adicionar aula ao curso
 coursesDisciplinesRouter.get(
   '/:course_id/select',

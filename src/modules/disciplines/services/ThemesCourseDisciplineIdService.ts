@@ -1,0 +1,39 @@
+import { inject, injectable } from 'tsyringe';
+
+import IThemesRepository from '../repositories/IThemesRepository';
+
+interface IMovie {
+  id: string;
+  title: string;
+}
+
+interface ITheme {
+  id: string;
+  theme: string;
+  movie: IMovie;
+}
+
+interface IRequest {
+  course_discipline_id: string;
+}
+
+@injectable()
+class ThemesCourseDisciplineIdService {
+  constructor(
+    @inject('ThemesRepository')
+    private themesRepository: IThemesRepository,
+  ) {}
+
+  public async execute({
+    course_discipline_id,
+  }: IRequest): Promise<ITheme[] | undefined> {
+    console.log('course_discipline_id', course_discipline_id);
+    const themes = await this.themesRepository.findAllThemesCourseDisciplineId(
+      course_discipline_id,
+    );
+
+    return themes;
+  }
+}
+
+export default ThemesCourseDisciplineIdService;

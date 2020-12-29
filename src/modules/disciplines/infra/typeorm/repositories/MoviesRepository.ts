@@ -3,16 +3,15 @@ import { getRepository, Repository } from 'typeorm';
 import ICreateMovieDTO from '@modules/disciplines/dtos/ICreateMovieDTO';
 import IMoviesRepository from '@modules/disciplines/repositories/IMoviesRepository';
 
-import CourseDiscipline from '../entities/CourseDiscipline';
 import Movie from '../entities/Movie';
 
 class MoviesRepository implements IMoviesRepository {
   private ormRepository: Repository<Movie>;
 
-  private ormCourseDisciplineRepository: Repository<CourseDiscipline>;
+  // private ormCourseDisciplineRepository: Repository<CourseDiscipline>;
 
   constructor() {
-    this.ormCourseDisciplineRepository = getRepository(CourseDiscipline);
+    // this.ormCourseDisciplineRepository = getRepository(CourseDiscipline);
     this.ormRepository = getRepository(Movie);
   }
 
@@ -28,7 +27,7 @@ class MoviesRepository implements IMoviesRepository {
     return movie;
   }
 
-  public async findAllMoviesForDisciplineId(
+  /* public async findAllMoviesForDisciplineId(
     discipline_id: string,
   ): Promise<CourseDiscipline[] | undefined> {
     const courseDisciplines = await this.ormCourseDisciplineRepository.find({
@@ -38,7 +37,7 @@ class MoviesRepository implements IMoviesRepository {
     });
 
     return courseDisciplines;
-  }
+  } */
 
   public async create(movie: ICreateMovieDTO): Promise<Movie> {
     const newMovie = this.ormRepository.create(movie);

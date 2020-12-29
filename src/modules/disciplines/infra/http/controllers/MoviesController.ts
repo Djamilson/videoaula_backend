@@ -16,14 +16,14 @@ export default class MoviesController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
-    const { discipline_id } = request.params;
+    const { movie_id } = request.params;
 
     const searchMovieForDisciplineIdService = container.resolve(
       SearchMovieForDisciplineIdService,
     );
 
     const movies = await searchMovieForDisciplineIdService.execute({
-      discipline_id,
+      movie_id,
     });
 
     return response.json(classToClass(movies));

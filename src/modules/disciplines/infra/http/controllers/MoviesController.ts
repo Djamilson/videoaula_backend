@@ -33,14 +33,11 @@ export default class MoviesController {
     try {
       const createMovieService = container.resolve(CreateMovieService);
 
-      const { title, course_id, discipline_id, theme_id } = req.body;
+      const { title } = req.body;
       const { filename } = req.file;
 
       const movie = await createMovieService.execute({
         title,
-        course_id,
-        discipline_id,
-        theme_id,
         filename,
       });
 

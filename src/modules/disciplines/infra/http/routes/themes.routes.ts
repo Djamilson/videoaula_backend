@@ -48,7 +48,7 @@ themesRouter.get('/', themesController.index);
 themesRouter.get('/:discipline_id', themesController.show);
 
 themesRouter.get(
-  '/course/discipline/:course_discipline_id',
+  '/courses/disciplines/:course_id/:discipline_id',
   themesCourseDisciplineController.index,
 );
 

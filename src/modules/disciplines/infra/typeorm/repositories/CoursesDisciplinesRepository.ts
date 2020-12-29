@@ -7,6 +7,7 @@ import CourseDiscipline from '../entities/CourseDiscipline';
 
 class CoursesDisciplinesRepository implements ICoursesDisciplinesRepository {
   private ormRepository: Repository<CourseDiscipline>;
+
   constructor() {
     this.ormRepository = getRepository(CourseDiscipline);
   }

@@ -1,19 +1,17 @@
-import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
+import { Router } from 'express';
 
 import ensureAuthenticated from '@modules/users/infra/http/middleware/ensureAuthenticanted';
 
 import CoursesDisciplinesController from '../controllers/CoursesDisciplinesController';
+import SelectCourseDisciplinesController from '../controllers/SelectCoursesDisciplinesController';
+import TableCourseDisciplinesController from '../controllers/TableCoursesDisciplinesController';
 
 const coursesDisciplinesRouter = Router();
 const coursesDisciplinesController = new CoursesDisciplinesController();
 
-import SelectCourseDisciplinesController from '../controllers/SelectCoursesDisciplinesController';
-import TableCourseDisciplinesController from '../controllers/TableCoursesDisciplinesController';
-
 const selectCourseDisciplinesController = new SelectCourseDisciplinesController();
 const tableCourseDisciplinesController = new TableCourseDisciplinesController();
-
 
 coursesDisciplinesRouter.use(ensureAuthenticated);
 
@@ -40,15 +38,15 @@ coursesDisciplinesRouter.put(
     },
   }),
   coursesDisciplinesController.update,
-);*/
+); */
 
-//para o select dentro do menu aula, para adicionar aula ao curso
+// para o select dentro do menu aula, para adicionar aula ao curso
 coursesDisciplinesRouter.get(
   '/:course_id/select',
   selectCourseDisciplinesController.index,
 );
 
-//para a table aula, para adicionar aula ao curso
+// para a table aula, para adicionar aula ao curso
 coursesDisciplinesRouter.get(
   '/:course_id/table',
   tableCourseDisciplinesController.index,

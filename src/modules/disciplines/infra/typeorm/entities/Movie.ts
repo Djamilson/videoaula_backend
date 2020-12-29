@@ -9,7 +9,9 @@ import {
 } from 'typeorm';
 
 import uploadConfig from '@config/upload';
+
 import Comment from './Comment';
+
 @Entity('movies')
 class Movie {
   @PrimaryGeneratedColumn('uuid')

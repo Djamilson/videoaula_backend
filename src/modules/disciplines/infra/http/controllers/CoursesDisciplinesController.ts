@@ -1,20 +1,16 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
-
 import { container } from 'tsyringe';
 
-import { classToClass } from 'class-transformer';
-
-import ListDisciplineService from '@modules/disciplines/services/ListDisciplineService';
-
 import CreateCourseDisciplineService from '@modules/disciplines/services/CreateCourseDisciplineService';
-//import DeleteCommentService from '@modules/disciplines/services/DeleteCommentService';
-//import ListCommentsByMovieIdService from '@modules/disciplines/services/ListCommentsByMovieIdService';
-//import UpdateCommentService from '@modules/disciplines/services/UpdateCommentService';
+import ListDisciplineService from '@modules/disciplines/services/ListDisciplineService';
 
 export default class CoursesDisciplinesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { course_id } = request.params;
     console.log('===', request.params);
+
+    console.log('===>>>', course_id);
 
     const listCoursesDiscipline = container.resolve(ListDisciplineService);
 

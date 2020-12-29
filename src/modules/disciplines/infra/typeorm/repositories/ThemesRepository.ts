@@ -50,9 +50,7 @@ class ThemesRepository implements IThemesRepository {
   }
 
   public async findByTitle(theme: string): Promise<Theme | undefined> {
-    console.log(' fazendo a busca theme:', theme);
     const newTheme = await this.ormRepository.findOne({ where: { theme } });
-    console.log('Retorno theme fazendo a busca:', newTheme);
 
     return newTheme;
   }

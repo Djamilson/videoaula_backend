@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+
 import AppError from '@shared/errors/AppError';
 
 import Comment from '../infra/typeorm/entities/Comment';
@@ -16,6 +18,9 @@ class CreateCommentService {
   constructor(
     @inject('CommentsRepository')
     private commentsRepository: ICommentsRepository,
+
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({
@@ -23,7 +28,6 @@ class CreateCommentService {
     movie_id,
     user_id,
   }: IRequest): Promise<Comment> {
-    console.log('comment movie_id  user_id', comment, movie_id, user_id);
     const checkCommentExists = await this.commentsRepository.findByComment(
       comment,
     );
@@ -32,14 +36,25 @@ class CreateCommentService {
       throw new AppError('Comment already used.');
     }
 
-    console.log('comment movie_id  user_id', comment, movie_id, user_id);
     const newComment = this.commentsRepository.create({
       comment,
       user_id,
       movie_id,
     });
 
-    return newComment;
+    const userExist = await this.usersRepository.findById(user_id);
+
+    const dataComment = {
+      ...newComment,
+      user: {
+        id: userExist?.id,
+        name: userExist?.person.name,
+        avatar_url: userExist?.person?.getAvatarUrl(),
+      },
+      comment_answers: [],
+    };
+
+    return dataComment;
   }
 }
 

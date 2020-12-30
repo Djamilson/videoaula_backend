@@ -19,8 +19,6 @@ export default class CommentsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { movie_id } = request.params;
 
-    console.log('movie_id', movie_id);
-
     const listCommentsService = container.resolve(ListCommentsByMovieIdService);
 
     const comments = await listCommentsService.execute({

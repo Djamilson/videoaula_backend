@@ -37,7 +37,7 @@ routes.use('/profile', profileRouter);
 routes.use('/disciplines', disciplinesRouter);
 routes.use('/movies', moviesRouter);
 routes.use('/comments', commentsRouter);
-routes.use('/commentsanswers', commentsAnswersRouter);
+routes.use('/comments/answers', commentsAnswersRouter);
 
 routes.use('/orders', ordersRouter);
 routes.use('/transactions', transactionsRouter);

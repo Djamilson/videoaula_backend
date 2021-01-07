@@ -5,25 +5,25 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class AddAddressIdToPersons1598375587193
+export default class AddPersonIdAddresses1609959220570
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
-      'persons',
+      'addresses',
       new TableColumn({
-        name: 'address_id_man',
+        name: 'person_id',
         type: 'uuid',
         isNullable: true,
       }),
     );
 
     await queryRunner.createForeignKey(
-      'persons',
+      'addresses',
       new TableForeignKey({
-        name: 'PersonsAddress',
-        columnNames: ['address_id_man'],
+        name: 'AddressesPersons',
+        columnNames: ['person_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'addresses',
+        referencedTableName: 'persons',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),
@@ -31,8 +31,8 @@ export default class AddAddressIdToPersons1598375587193
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('persons', 'PersonsAddress');
+    await queryRunner.dropForeignKey('addresses', 'AddressesPersons');
 
-    await queryRunner.dropColumn('persons', 'address_id_man');
+    await queryRunner.dropColumn('addresses', 'person_id');
   }
 }

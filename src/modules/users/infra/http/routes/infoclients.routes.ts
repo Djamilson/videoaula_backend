@@ -8,6 +8,6 @@ const infoClientsController = new InfoClientsController();
 
 infoClientsRouter.use(ensureAuthenticated);
 
-infoClientsRouter.put('/', infoClientsController.update);
+infoClientsRouter.post('/', infoClientsController.create);
 
 export default infoClientsRouter;

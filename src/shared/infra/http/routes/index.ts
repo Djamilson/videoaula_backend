@@ -1,11 +1,16 @@
 import { Router } from 'express';
 
-import feesRouter from '@modules/free/infra/http/routes/fees.routes';
-import ordersRouter from '@modules/orders/infra/http/routes/orders.routes';
-import transactionsRouter from '@modules/payments/infra/http/routes/transactions.routes';
 import coursesRouter from '@modules/courses/infra/http/routes/courses.routes';
+import commentsRouter from '@modules/disciplines/infra/http/routes/comments.routes';
+import commentsAnswersRouter from '@modules/disciplines/infra/http/routes/commentsanswers.routes';
+import coursesDisciplinesRouter from '@modules/disciplines/infra/http/routes/coursesdisciplines.routes';
 import disciplinesRouter from '@modules/disciplines/infra/http/routes/disciplines.routes';
 import moviesRouter from '@modules/disciplines/infra/http/routes/movies.routes';
+import themesRouter from '@modules/disciplines/infra/http/routes/themes.routes';
+import feesRouter from '@modules/free/infra/http/routes/fees.routes';
+import ordersCoursesRouter from '@modules/orders/infra/http/routes/orders.courses.routes';
+import ordersRouter from '@modules/orders/infra/http/routes/orders.routes';
+import transactionsRouter from '@modules/payments/infra/http/routes/transactions.routes';
 import addressesRouter from '@modules/users/infra/http/routes/addresses.routes';
 import citiesRouter from '@modules/users/infra/http/routes/cities.routes';
 import groupsRouter from '@modules/users/infra/http/routes/groups.routes';
@@ -16,10 +21,6 @@ import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
 import statesRouter from '@modules/users/infra/http/routes/states.routes';
 import usersRouter from '@modules/users/infra/http/routes/users.routes';
-import coursesDisciplinesRouter from '@modules/disciplines/infra/http/routes/coursesdisciplines.routes';
-import themesRouter from '@modules/disciplines/infra/http/routes/themes.routes';
-import commentsRouter from '@modules/disciplines/infra/http/routes/comments.routes';
-import commentsAnswersRouter from '@modules/disciplines/infra/http/routes/commentsanswers.routes';
 
 const routes = Router();
 
@@ -40,6 +41,7 @@ routes.use('/comments', commentsRouter);
 routes.use('/comments/answers', commentsAnswersRouter);
 
 routes.use('/orders', ordersRouter);
+routes.use('/orders/courses', ordersCoursesRouter);
 routes.use('/transactions', transactionsRouter);
 
 routes.use('/cities', citiesRouter);

@@ -22,7 +22,7 @@ commentsAnswersRouter.post(
 );
 
 commentsAnswersRouter.put(
-  '/',
+  '/ll',
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().required(),

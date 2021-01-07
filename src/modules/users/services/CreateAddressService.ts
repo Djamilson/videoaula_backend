@@ -48,9 +48,9 @@ class CreateAddressService {
     );
 
     const checkUserExists = await this.usersRepository.findById(user_id);
-
+    console.log('person:::', checkUserExists);
     if (!checkUserExists) {
-      throw new AppError('Address already used.');
+      throw new AppError('User not exist.');
     }
     const { person_id } = checkUserExists;
 

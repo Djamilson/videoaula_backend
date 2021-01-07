@@ -5383,10 +5383,10 @@ packet-reader@1.0.0:
   resolved "https://registry.yarnpkg.com/packet-reader/-/packet-reader-1.0.0.tgz#9238e5480dedabacfe1fe3f2771063f164157d74"
   integrity sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==
 
-pagarme-js-types@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/pagarme-js-types/-/pagarme-js-types-2.1.1.tgz#0848abc53e1facf2ffb9afe49054d61d4c766bb3"
-  integrity sha512-Z4ybdM6HIrMUYaXT9DWe8sz2P4DRg5K4xnklUVJs8q7+QlZ3IndrYx6TfI1wmSwttbkn6C5aaNwHOtAacTLQjQ==
+pagarme-js-types@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/pagarme-js-types/-/pagarme-js-types-2.6.0.tgz#3c6ab507f11af336409812fc60ace0d745c1ad8d"
+  integrity sha512-ff0XFEE83StzyfiMYhOdjjRdtaEiX7dBPMLWpCq9JcshFZxZh8zIU3ph8L5eQH+R9mKNXp9uUzlcqfOhEb9EYw==
 
 pagarme@^4.13.0:
   version "4.13.0"

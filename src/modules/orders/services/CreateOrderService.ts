@@ -1,9 +1,9 @@
 import { inject, injectable, container } from 'tsyringe';
 
-import ITransactionsRepository from '@modules/payments/repositories/ITransactionsRepository';
-import CreatePagarmeCardService from '@modules/payments/services/CreatePagarmeCardService';
 import Course from '@modules/courses/infra/typeorm/entities/Course';
 import ICoursesRepository from '@modules/courses/repositories/ICoursesRepository';
+import ITransactionsRepository from '@modules/payments/repositories/ITransactionsRepository';
+import CreatePagarmeCardService from '@modules/payments/services/CreatePagarmeCardService';
 import IAddressesRepository from '@modules/users/repositories/IAddressesRepository';
 import IPhonesRepository from '@modules/users/repositories/IPhonesRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -18,15 +18,7 @@ interface IOrderCourse {
 }
 
 interface ICourse {
-  itemCourse: {
-    stock: number;
-    course: {
-      id: string;
-      name: string;
-      stock: number;
-      price: number;
-    };
-  };
+  id: string;
 }
 interface IRequest {
   user_id: string;
@@ -56,7 +48,7 @@ interface IOrder {
       status: boolean;
       privacy: boolean;
       avatar: string;
-      address_id_man: string;
+      address_id_main: string;
       phone_id_man: string;
     };
   };
@@ -105,60 +97,49 @@ class CreateOrderService {
       throw new AppError('There not find any user with the givan id');
     }
 
+    console.log('ouououo doo 1', userExists);
+
     const existentCourses = await this.coursesRepository.findAllById(courses);
 
     if (!existentCourses.length) {
       throw new AppError('Could not find course with the ids');
     }
 
+    console.log('ouououo doo 2');
     const courseExistsIds = existentCourses.map(course => course.id);
 
     const checkInexistentCourses = courses.filter(
-      course => !courseExistsIds.includes(course.itemCourse.course.id),
+      course => !courseExistsIds.includes(course.id),
     );
 
     if (checkInexistentCourses.length) {
       throw new AppError(
-        `Could not find course ${checkInexistentCourses[0].itemCourse.course.id}`,
+        `Could not find course ${checkInexistentCourses[0].id}`,
       );
     }
 
-    const findCoursesWithNoQuantity = courses.filter(item => {
-      return (
-        existentCourses.filter(p => p.id === item.itemCourse.course.id)[0]
-          .stock < item.itemCourse.stock
-      );
-    });
-    console.log('Estou no service 2=>>>');
-    if (findCoursesWithNoQuantity.length) {
-      throw new AppError(
-        `The quantity ${findCoursesWithNoQuantity[0].itemCourse.course.stock}
-        is not available for
-        ${findCoursesWithNoQuantity[0].itemCourse.course.id} `,
-      );
-    }
+    console.log('ouououo doo 3');
 
     console.log('Estou no service 3=>>>List courses', courses);
 
-    const serializadCourses = courses.map(order_course => {
-      const oldPrice = existentCourses.filter(
-        p => p.id === order_course.itemCourse.course.id,
-      )[0].price;
+    const serializadCourses = existentCourses.map(order_course => {
+      const oldPrice = existentCourses.filter(p => p.id === order_course.id)[0]
+        .price;
 
       console.log('oldPrice=>>> ', oldPrice);
 
       return {
-        name: order_course.itemCourse.course.name,
-        subtotal: oldPrice * order_course.itemCourse.stock,
-        course_id: order_course.itemCourse.course.id,
-        quantity: order_course.itemCourse.stock,
+        name: order_course.name,
+        subtotal: oldPrice,
+        course_id: order_course.id,
+        quantity: 1,
         price: oldPrice,
       };
     });
     console.log('SerializadCourses =>>>', serializadCourses);
 
     const total = serializadCourses.reduce((totalsum, item) => {
-      return totalsum + item.price * item.quantity;
+      return totalsum + item.price;
     }, 0);
 
     const phone = await this.phonesRepository.findById(
@@ -169,10 +150,12 @@ class CreateOrderService {
       /([^0-9])/g,
       '',
     );
-
+    console.log('SerializadCourses =>>> 22');
     const address = await this.addressesRepository.findById(
-      userExists.person.address_id_man,
+      userExists.person.address_id_main,
     );
+
+    console.log('SerializadCourses =>>> 33');
 
     const {
       transaction_id,
@@ -204,25 +187,9 @@ class CreateOrderService {
     console.log('Estou no service pagamento =>>> Find');
     const { id: order_id, order_courses } = newOrder;
 
-    const orderedCoursesQuantity = order_courses.map(course => ({
-      id: course.course_id,
-      stock:
-        existentCourses.filter(p => p.id === course.course_id)[0].stock -
-        course.quantity,
-    }));
-
-    await this.coursesRepository.updateQuantity(orderedCoursesQuantity);
-
     const order_courseIds = order_courses.map((ord_course: IOrderCourse) => {
       return {
-        itemCourse: {
-          stock: 0,
-          course: {
-            id: ord_course.course_id,
-            name: '',
-            price: 0,
-          },
-        },
+        id: ord_course.course_id,
       };
     });
 
@@ -260,7 +227,7 @@ class CreateOrderService {
           status: newOrder.user.person.status,
           privacy: newOrder.user.person.privacy,
           avatar: newOrder.user.person.avatar,
-          address_id_man: newOrder.user.person.address_id_man,
+          address_id_main: newOrder.user.person.address_id_main,
           phone_id_man: newOrder.user.person.phone_id_man,
         },
       },

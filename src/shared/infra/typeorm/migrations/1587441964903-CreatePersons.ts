@@ -53,7 +53,6 @@ export default class CreatePersons1587441964903 implements MigrationInterface {
             type: 'boolean',
             default: false,
           },
-
           {
             name: 'created_at',
             type: 'timestamp',

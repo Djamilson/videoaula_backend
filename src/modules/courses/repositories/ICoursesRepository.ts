@@ -4,14 +4,7 @@ import IUpdateCoursesQuantityDTO from '../dtos/IUpdateStocksQuantityDTO';
 import Course from '../infra/typeorm/entities/Course';
 
 interface ICourse {
-  itemCourse: {
-    stock: number;
-    course: {
-      id: string;
-      price: number;
-      name: string;
-    };
-  };
+  id: string;
 }
 
 export default interface ICoursesRepository {

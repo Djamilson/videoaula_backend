@@ -13,7 +13,8 @@ interface IRequest {
   discipline_id: string;
   theme: string;
   title: string;
-  filename: string;
+  movie: string;
+  image: string;
 }
 
 @injectable()
@@ -31,9 +32,10 @@ class CreateThemeService {
     theme,
     course_id,
     discipline_id,
-    filename,
+    movie,
+    image,
   }: IRequest): Promise<Theme> {
-    console.log('Passs:::', title, theme, course_id, discipline_id, filename);
+    console.log('Passs:::', title, theme, course_id, discipline_id, movie);
     const checkCourseDisciplineExists = await this.coursesDisciplinesRepository.findByCourseDiscipline(
       course_id,
       discipline_id,
@@ -56,7 +58,8 @@ class CreateThemeService {
 
     const { id } = await createMovieService.execute({
       title,
-      filename,
+      image,
+      movie,
     });
 
     console.log('Passou 3', id);

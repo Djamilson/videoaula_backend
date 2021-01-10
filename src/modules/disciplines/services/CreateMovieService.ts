@@ -8,7 +8,8 @@ import IMoviesRepository from '../repositories/IMoviesRepository';
 
 interface IRequest {
   title: string;
-  filename: string;
+  movie: string;
+  image: string;
 }
 
 @injectable()
@@ -19,10 +20,13 @@ class CreateMovieService {
 
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
+
+    @inject('StorageProviderVimeo')
+    private storageProviderVimeo: IStorageProvider,
   ) {}
 
-  public async execute({ title, filename }: IRequest): Promise<Movie> {
-    console.log('Check', title, filename);
+  public async execute({ title, movie, image }: IRequest): Promise<Movie> {
+    const serealizableMovie = movie.replace('https://vimeo.com/', '');
 
     const checkMovieExists = await this.moviesRepository.findByTitle(title);
 
@@ -30,17 +34,17 @@ class CreateMovieService {
       throw new AppError('Movie already used.');
     }
 
-    console.log('Fazendo a busca do theme', filename);
+    // await this.storageProvider.saveFile(filename);
+    // await this.storageProviderVimeo.saveFile(filename);
+    // console.log('Vou inicia a criação do video vimeo', filename);
 
-    console.log('Vai criar o video na aws', filename);
-    await this.storageProvider.saveFile(filename);
-    console.log('Criou o video na aws', filename);
-    const movie = await this.moviesRepository.create({
+    const newMovie = await this.moviesRepository.create({
       title,
-      movie: filename,
+      movie: serealizableMovie,
+      image,
     });
 
-    return movie;
+    return newMovie;
   }
 }
 

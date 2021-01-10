@@ -43,7 +43,7 @@ themesRouter.put(
   themesController.update,
 ); */
 
-themesRouter.post('/', upload.single('file'), themesController.create);
+themesRouter.post('/', themesController.create);
 themesRouter.put('/', upload.single('file'), themesController.update);
 
 themesRouter.get('/', themesController.index);

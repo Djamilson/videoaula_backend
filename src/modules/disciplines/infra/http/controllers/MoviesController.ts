@@ -33,15 +33,22 @@ export default class MoviesController {
     try {
       const createMovieService = container.resolve(CreateMovieService);
 
-      const { title } = req.body;
-      const { filename } = req.file;
+      const { title, movie, image } = req.body;
 
+      // const { filename } = req.file;
+      /*
       const movie = await createMovieService.execute({
         title,
         filename,
+      }); */
+
+      const newMovie = await createMovieService.execute({
+        title,
+        movie,
+        image,
       });
 
-      return res.json(movie);
+      return res.json(newMovie);
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }

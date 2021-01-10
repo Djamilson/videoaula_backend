@@ -34,13 +34,13 @@ export default class ThemesController {
     try {
       console.log('Theme: ', req.body);
 
-      const { filename } = req.file;
+      // const { filename } = req.file;
 
       console.log('req.file: ', req.file);
 
       const createThemeService = container.resolve(CreateThemeService);
 
-      const theme = await createThemeService.execute({ ...req.body, filename });
+      const theme = await createThemeService.execute({ ...req.body });
 
       return res.json(classToClass(theme));
     } catch (error) {

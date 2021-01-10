@@ -6,7 +6,7 @@ import path from 'path';
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
 interface IUploadConfig {
-  driver: 's3' | 'disk';
+  driver: 's3' | 'disk' | 'vimeo';
 
   tmpFolder: string;
   uploadsFolder: string;
@@ -19,6 +19,9 @@ interface IUploadConfig {
     disk: {};
     aws: {
       bucket: string;
+    };
+    vimeo: {
+      vimeo: string;
     };
   };
 }
@@ -45,6 +48,10 @@ export default {
     disk: {},
     aws: {
       bucket: process.env.BUCKET_NAME,
+    },
+
+    vimeo: {
+      vimeo: process.env.VIMEO_NAME,
     },
   },
 } as IUploadConfig;

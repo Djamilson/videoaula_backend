@@ -23,6 +23,9 @@ class Movie {
   @Column()
   movie: string;
 
+  @Column()
+  image: string;
+
   @OneToMany(() => Comment, comment => comment.movie)
   comments: Comment[];
 
@@ -31,11 +34,19 @@ class Movie {
     if (!this.movie) {
       return null;
     }
+    return `https://${process.env.VIMEO_NAME}/${this.movie}`;
+  }
+
+  @Expose({ name: 'image_url' })
+  getImageUrl(): string | null {
+    if (!this.movie) {
+      return null;
+    }
     switch (uploadConfig.driver) {
       case 'disk':
-        return `${process.env.APP_API_URL}/files/${this.movie}`;
+        return `${process.env.APP_API_URL}/files/${this.image}`;
       case 's3':
-        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.movie}`;
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.image}`;
       default:
         return null;
     }

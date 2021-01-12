@@ -29,59 +29,12 @@ class VimeoStorageProvider implements IStorageProvider {
 
     const fileContent = await fs.promises.readFile(originalPath);
 
-    console.log('Estou no vimeo: Meu accessToken', this.client.accessToken);
-
-    /*
-    await this.client
-      .putObject({
-        Bucket: uploadConfig.config.aws.bucket,
-        Key: file,
-        ACL: 'public-read',
-        Body: fileContent,
-        ContentType,
-      })
-      .promise()
-      .catch(err => {
-        console.log('Upload failed:', err);
-      }); */
-
-    /* this.client.generateClientCredentials(scope, function (err, response) {
-      if (err) {
-        throw err;
-      }
-      const token = response.access_token;
-      const scopes = response.scope;
-
-      console.log('Meus dados: ', token, scopes);
-    }); */
-
-    // `redirect_uri` must be provided, and must match your configured URI.
-    /* this.client.accessToken(code, redirect_uri, function (err, response) {
-      if (err) {
-        return response.end(`error\n${err}`);
-      }
-
-      if (response.access_token) {
-        this.client.setAccessToken(response.access_token);
-
-        const scopes = response.scope;
-        const { user } = response;
-      }
-    }); */
-
     await fs.promises.unlink(originalPath);
 
     return file;
   }
 
-  /* public async deleteFile(file: string): Promise<void> {
-    await this.client
-      .deleteObject({
-        Bucket: uploadConfig.config.aws.bucket,
-        Key: file,
-      })
-      .promise();
-  } */
+  public async deleteFile(file: string): Promise<void> {}
 }
 
 export default VimeoStorageProvider;

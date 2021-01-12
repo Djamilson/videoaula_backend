@@ -10,8 +10,7 @@ export default class ThemesClassController {
       ThemesCourseDisciplineIdService,
     );
 
-    console.log('request.params', request.params);
-    const { course_discipline_id } = request.params;
+     const { course_discipline_id } = request.params;
 
     const themes = await themesCourseDisciplineIdService.execute({
       course_discipline_id,

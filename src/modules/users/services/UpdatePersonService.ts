@@ -53,8 +53,6 @@ class UpdatePersonService {
     person.address_id_main = address_id_main;
     person.phone_id_man = phone_id_man;
 
-    console.log('vou salvar essa merda:', person);
-
     return this.personsRepository.save(person);
   }
 }

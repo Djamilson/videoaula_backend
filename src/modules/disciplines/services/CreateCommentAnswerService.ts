@@ -23,8 +23,6 @@ class CreateCommentAnswerService {
     comment_id,
     user_id,
   }: IRequest): Promise<IAnswerDTO | undefined> {
-    console.log('Service: ', comment_answer, comment_id, user_id);
-
     const checkCommentAnswerExists = await this.commentsAnswersRepository.findByCommentAnswer(
       comment_answer,
     );

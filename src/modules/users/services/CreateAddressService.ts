@@ -36,25 +36,11 @@ class CreateAddressService {
     user_id,
     city_id,
   }: IRequest): Promise<Address> {
-    console.log(
-      'serviços address:',
-      number,
-      street,
-      complement,
-      zip_code,
-      neighborhood,
-      user_id,
-      city_id,
-    );
-
     const checkUserExists = await this.usersRepository.findById(user_id);
-    console.log('person:::', checkUserExists);
     if (!checkUserExists) {
       throw new AppError('User not exist.');
     }
     const { person_id } = checkUserExists;
-
-    console.log('person:::', person_id);
 
     const checkAddressExists = await this.addressesRepository.findByAddress({
       number,
@@ -65,8 +51,6 @@ class CreateAddressService {
       person_id,
       city_id,
     });
-
-    console.log('checkout person:::', checkAddressExists);
 
     if (checkAddressExists) {
       throw new AppError('Address already used.');
@@ -82,10 +66,7 @@ class CreateAddressService {
       city_id,
     };
 
-    console.log('address::: init');
     const address = this.addressesRepository.create(addressSerealizable);
-
-    console.log('address:::', address);
 
     return address;
   }

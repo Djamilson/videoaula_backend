@@ -35,7 +35,6 @@ class CreateThemeService {
     movie,
     image,
   }: IRequest): Promise<Theme> {
-    console.log('Passs:::', title, theme, course_id, discipline_id, movie);
     const checkCourseDisciplineExists = await this.coursesDisciplinesRepository.findByCourseDiscipline(
       course_id,
       discipline_id,
@@ -48,7 +47,6 @@ class CreateThemeService {
     const { id: course_discipline_id } = checkCourseDisciplineExists;
 
     const checkThemeExists = await this.themesRepository.findByTitle(theme);
-    console.log('Passou 2', checkThemeExists?.id);
 
     if (checkThemeExists) {
       throw new AppError('Movie already used.');
@@ -62,14 +60,12 @@ class CreateThemeService {
       movie,
     });
 
-    console.log('Passou 3', id);
     const objectTheme = await this.themesRepository.create({
       theme,
       movie_id: id,
       course_discipline_id,
     });
 
-    console.log('Passou 4');
     return objectTheme;
   }
 }

@@ -19,8 +19,6 @@ export default class DisciplinesController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
-    console.log('Testst:');
-
     const listDisciplinesAll = container.resolve(ListDisciplinesAllService);
 
     const disciplines = await listDisciplinesAll.execute();

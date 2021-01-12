@@ -38,8 +38,6 @@ class ThemesAllCourseDisciplineIdService {
       discipline_id,
     );
 
-    console.log('==>', courseDiscipline);
-
     if (courseDiscipline) {
       const { id } = courseDiscipline;
       const themes = await this.themesRepository.findAllThemesCourseDisciplineId(

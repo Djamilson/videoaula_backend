@@ -42,7 +42,7 @@ class S3StorageProvider implements IStorageProvider {
       })
       .promise()
       .catch(err => {
-        console.log('Upload failed:', err);
+        // console.log('Upload failed:', err);
       });
 
     await fs.promises.unlink(originalPath);

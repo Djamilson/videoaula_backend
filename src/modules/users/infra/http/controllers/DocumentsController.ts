@@ -12,8 +12,6 @@ export default class InfoPersonController {
 
       const updatePerson = container.resolve(UpdateDocumentService);
 
-      console.log('req.body:: ', req.body);
-
       const person = await updatePerson.execute({
         user_id,
         cpf,

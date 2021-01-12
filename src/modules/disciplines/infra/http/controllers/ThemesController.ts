@@ -32,11 +32,7 @@ export default class ThemesController {
 
   public async create(req: Request, res: Response): Promise<Response> {
     try {
-      console.log('Theme: ', req.body);
-
       // const { filename } = req.file;
-
-      console.log('req.file: ', req.file);
 
       const createThemeService = container.resolve(CreateThemeService);
 
@@ -49,7 +45,6 @@ export default class ThemesController {
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
-    console.log('Controller', req.body);
     const updateTheme = container.resolve(UpdateThemeService);
 
     const theme = await updateTheme.execute(req.body);

@@ -97,15 +97,12 @@ class CreateOrderService {
       throw new AppError('There not find any user with the givan id');
     }
 
-    console.log('ouououo doo 1', userExists);
-
     const existentCourses = await this.coursesRepository.findAllById(courses);
 
     if (!existentCourses.length) {
       throw new AppError('Could not find course with the ids');
     }
 
-    console.log('ouououo doo 2');
     const courseExistsIds = existentCourses.map(course => course.id);
 
     const checkInexistentCourses = courses.filter(
@@ -118,15 +115,9 @@ class CreateOrderService {
       );
     }
 
-    console.log('ouououo doo 3');
-
-    console.log('Estou no service 3=>>>List courses', courses);
-
     const serializadCourses = existentCourses.map(order_course => {
       const oldPrice = existentCourses.filter(p => p.id === order_course.id)[0]
         .price;
-
-      console.log('oldPrice=>>> ', oldPrice);
 
       return {
         name: order_course.name,
@@ -136,7 +127,6 @@ class CreateOrderService {
         price: oldPrice,
       };
     });
-    console.log('SerializadCourses =>>>', serializadCourses);
 
     const total = serializadCourses.reduce((totalsum, item) => {
       return totalsum + item.price;
@@ -150,12 +140,9 @@ class CreateOrderService {
       /([^0-9])/g,
       '',
     );
-    console.log('SerializadCourses =>>> 22');
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
     );
-
-    console.log('SerializadCourses =>>> 33');
 
     const {
       transaction_id,
@@ -176,7 +163,6 @@ class CreateOrderService {
       total: total + fee,
     });
 
-    console.log('Estou no service pagamento =>>>');
     const newOrder = await this.ordersRepository.create({
       user: userExists,
       courses: serializadCourses,
@@ -184,7 +170,6 @@ class CreateOrderService {
       fee,
     });
 
-    console.log('Estou no service pagamento =>>> Find');
     const { id: order_id, order_courses } = newOrder;
 
     const order_courseIds = order_courses.map((ord_course: IOrderCourse) => {

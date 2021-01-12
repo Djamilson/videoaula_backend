@@ -30,8 +30,6 @@ export default class OrdersController {
   public async create(request: Request, response: Response): Promise<Response> {
     // const { user_id, courses } = request.body;
 
-    console.log('request.body:', request.body);
-
     const user_id = request.user.id;
     const { courses, fee, card_hash, installments } = request.body;
 
@@ -45,7 +43,6 @@ export default class OrdersController {
       installments,
     });
 
-    console.log('passou:::: final', customer);
     return response.json(customer);
   }
 }

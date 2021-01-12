@@ -17,8 +17,6 @@ class ListStatesService {
   public async execute(): Promise<IState[] | undefined> {
     const listStates = await this.statesRepository.findAll();
 
-    console.log('States:::', listStates);
-
     const options = listStates?.map(state => ({
       value: state.id,
       label: state.name,

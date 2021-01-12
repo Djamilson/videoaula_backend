@@ -27,7 +27,6 @@ class ThemesCourseDisciplineIdService {
   public async execute({
     course_discipline_id,
   }: IRequest): Promise<ITheme[] | undefined> {
-    console.log('course_discipline_id', course_discipline_id);
     const themes = await this.themesRepository.findAllThemesCourseDisciplineId(
       course_discipline_id,
     );

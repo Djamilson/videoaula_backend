@@ -9,9 +9,9 @@ import UpdateCommentService from '@modules/disciplines/services/UpdateCommentSer
 
 export default class CommentsController {
   public async show(request: Request, response: Response): Promise<Response> {
-    const { zip_code } = request.params;
+    // const { zip_code } = request.params;
 
-    const user_id = request.user.id;
+    // const user_id = request.user.id;
 
     return response.json({ fee: true });
   }
@@ -70,7 +70,6 @@ export default class CommentsController {
     response: Response,
   ): Promise<Response> {
     const { idComment } = request.params;
-    console.log('Chegue', idComment);
 
     const commentsService = container.resolve(DeleteCommentService);
 

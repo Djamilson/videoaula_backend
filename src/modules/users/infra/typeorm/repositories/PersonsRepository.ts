@@ -29,8 +29,6 @@ class PersonsRepository implements IPersonsRepository {
   }
 
   public async save(person: Person): Promise<Person> {
-    console.log('Agora quero vê', person);
-
     return this.ormPersonRepository.save(person);
   }
 }

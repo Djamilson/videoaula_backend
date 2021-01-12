@@ -54,8 +54,6 @@ class CreateCommentService {
       movie_id,
     });
 
-    console.log('Meu commmm>>', newComment);
-
     const userExist = await this.usersRepository.findById(user_id);
 
     const dataComment = {

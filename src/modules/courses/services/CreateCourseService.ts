@@ -32,16 +32,13 @@ class CreateCourseService {
     const courseExists = await this.coursesRepository.findByName(name);
 
     if (courseExists) {
-      console.log('Curso já cadastrado');
       throw new AppError('There is already one course with this name');
     }
 
     if (image !== '') {
-      console.log('Vou salvar a Imagem !', image);
       await this.storageProvider.saveFile(image);
     }
 
-    console.log('Vou criar o curso!', name, image, price, stock);
     const course = this.coursesRepository.create({
       name,
       image,

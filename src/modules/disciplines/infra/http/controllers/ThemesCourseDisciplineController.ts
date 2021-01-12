@@ -8,8 +8,6 @@ export default class ThemesCourseDisciplineController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { course_id, discipline_id } = request.params;
 
-    console.log('===>>>', course_id, discipline_id);
-
     const themesAllCourseDisciplineIdService = container.resolve(
       ThemesAllCourseDisciplineIdService,
     );

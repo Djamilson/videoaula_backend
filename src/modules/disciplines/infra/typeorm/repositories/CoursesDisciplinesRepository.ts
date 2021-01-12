@@ -22,8 +22,6 @@ class CoursesDisciplinesRepository implements ICoursesDisciplinesRepository {
     course_id: string,
     discipline_id: string,
   ): Promise<CourseDiscipline | undefined> {
-    console.log('Estou fazendo a busca:', course_id, discipline_id);
-
     const courseDiscipline = await this.ormRepository.findOne({
       where: { course_id, discipline_id },
     });

@@ -55,9 +55,6 @@ export default class MoviesController {
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
-    console.log('Controller', req.body);
-    console.log('Dados da Image:', req.user.id, req.file.filename);
-
     const { title, course_id, discipline_id } = req.body;
     const { filename } = req.file;
 

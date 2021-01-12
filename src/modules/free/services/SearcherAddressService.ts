@@ -31,7 +31,6 @@ class SearcherAddressService {
     const correios = new Correios();
 
     const data = await correios.consultaCEP({ cep: '77018452' });
-    console.log('data:', data);
 
     return data;
   }

@@ -22,8 +22,6 @@ class PhonesRepository implements IPhonesRepository {
   }
 
   public async findById(id: string): Promise<Phone | undefined> {
-    console.log('id my phone:', id);
-
     const phone = await this.ormPhoneRepository.findOne(id);
 
     return phone;

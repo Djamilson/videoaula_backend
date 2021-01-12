@@ -13,8 +13,6 @@ class CommentsRepository implements ICommentsRepository {
   }
 
   public async findById(id: string): Promise<Comment | undefined> {
-    console.log('Estou no findById:', id);
-
     const comment = await this.ormRepository.findOne(id);
 
     return comment;
@@ -29,8 +27,6 @@ class CommentsRepository implements ICommentsRepository {
   public async findAllCommentByMovieId(
     movie_id: string,
   ): Promise<Comment[] | undefined> {
-    console.log('Estou no findById na busac:', movie_id);
-
     const comments = await this.ormRepository.find({
       where: { movie_id },
 
@@ -46,13 +42,10 @@ class CommentsRepository implements ICommentsRepository {
       },
     });
 
-    console.log('Estou no findById naufaff:', comments);
-
     return comments;
   }
 
   public async create(comment: ICreateCommentDTO): Promise<Comment> {
-    console.log('Estou no create:', comment);
     const newComment = this.ormRepository.create(comment);
 
     await this.ormRepository.save(newComment);

@@ -37,7 +37,6 @@ class UpdateCourseImageService {
 
     const filename = await this.storageProvider.saveFile(imageFilename);
 
-    console.log('==>>2', imageFilename);
     course.image = filename;
 
     await this.coursesRepository.save(course);

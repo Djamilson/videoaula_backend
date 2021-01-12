@@ -16,8 +16,6 @@ export default class InfoClientsController {
       const updatePerson = container.resolve(UpdatePersonService);
       const createPhone = container.resolve(CreatePhoneService);
 
-      console.log('req.body:: ', req.body);
-
       const { id: address_id_main } = await createAddress.execute({
         ...address,
         user_id,
@@ -28,15 +26,12 @@ export default class InfoClientsController {
         user_id,
       });
 
-      console.log('phone_id_man::', phone_id_man);
-
       const person = await updatePerson.execute({
         user_id,
         ...documents,
         address_id_main,
         phone_id_man,
       });
-      console.log('Salvaou tudo ::', person);
 
       return res.json(classToClass(person));
     } catch (error) {

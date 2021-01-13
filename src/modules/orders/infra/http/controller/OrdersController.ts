@@ -42,6 +42,8 @@ export default class OrdersController {
       installments,
     });
 
+    console.log('Finalizaou');
+
     return response.json(customer);
   }
 }

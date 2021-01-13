@@ -140,6 +140,7 @@ class CreateOrderService {
       /([^0-9])/g,
       '',
     );
+
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
     );
@@ -162,6 +163,15 @@ class CreateOrderService {
       installments,
       total: total + fee,
     });
+
+    console.log(
+      transaction_id,
+      status,
+      authorization_code,
+      authorized_amount,
+      brand,
+      tid,
+    );
 
     const newOrder = await this.ordersRepository.create({
       user: userExists,
@@ -201,7 +211,7 @@ class CreateOrderService {
       installments,
       order_id,
     });
-
+    console.log('Chegou 1:::');
     const order = {
       user: {
         id: newOrder.user.id,

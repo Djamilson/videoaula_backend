@@ -150,9 +150,22 @@ class CreateOrderService {
       '',
     );
 
-    console.log('iniciou: 10');
+    console.log('iniciou: 10', userExists.person.address_id_main);
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
+    );
+
+    console.log(
+      'iniciou: 11',
+      fee,
+      card_hash,
+      userExists,
+      newPhone,
+      address,
+      serializadCourses,
+      user_id,
+      installments,
+      total + fee,
     );
 
     const {
@@ -175,6 +188,7 @@ class CreateOrderService {
     });
 
     console.log(
+      'Pasoou::::',
       transaction_id,
       status,
       authorization_code,

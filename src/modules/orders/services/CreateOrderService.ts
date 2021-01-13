@@ -91,25 +91,20 @@ class CreateOrderService {
   }: IRequest): Promise<IOrder> {
     const createPagarmeCard = container.resolve(CreatePagarmeCardService);
 
-    console.log('iniciou: ', user_id, fee, courses, card_hash, installments);
     const userExists = await this.usersRepository.findById(user_id);
 
-    console.log('iniciou: 2');
     if (!userExists) {
       throw new AppError('There not find any user with the givan id');
     }
 
     const existentCourses = await this.coursesRepository.findAllById(courses);
 
-    console.log('iniciou: 3');
     if (!existentCourses.length) {
       throw new AppError('Could not find course with the ids');
     }
 
-    console.log('iniciou: 4');
     const courseExistsIds = existentCourses.map(course => course.id);
 
-    console.log('iniciou: 5');
     const checkInexistentCourses = courses.filter(
       course => !courseExistsIds.includes(course.id),
     );
@@ -120,7 +115,6 @@ class CreateOrderService {
       );
     }
 
-    console.log('iniciou: 6');
     const serializadCourses = existentCourses.map(order_course => {
       const oldPrice = existentCourses.filter(p => p.id === order_course.id)[0]
         .price;
@@ -134,38 +128,21 @@ class CreateOrderService {
       };
     });
 
-    console.log('iniciou: 7');
     const total = serializadCourses.reduce((totalsum, item) => {
       return totalsum + item.price;
     }, 0);
 
-    console.log('iniciou: 8');
     const phone = await this.phonesRepository.findById(
       userExists.person.phone_id_man,
     );
 
-    console.log('iniciou: 9');
     const newPhone = `${phone?.prefix}${phone?.number}`.replace(
       /([^0-9])/g,
       '',
     );
 
-    console.log('iniciou: 10', userExists.person.address_id_main);
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
-    );
-
-    console.log(
-      'iniciou: 11',
-      fee,
-      card_hash,
-      userExists,
-      newPhone,
-      address,
-      serializadCourses,
-      user_id,
-      installments,
-      total + fee,
     );
 
     const {

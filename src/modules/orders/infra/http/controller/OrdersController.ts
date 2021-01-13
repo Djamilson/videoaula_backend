@@ -28,8 +28,6 @@ export default class OrdersController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    // const { user_id, courses } = request.body;
-
     const user_id = request.user.id;
     const { courses, fee, card_hash, installments } = request.body;
 

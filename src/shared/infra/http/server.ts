@@ -47,5 +47,5 @@ app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
 });
 
 app.listen(3335, () => {
-  // console.log('Inicializou o server, port 3335!');
+  console.log('Inicializou o server, port 3335!');
 });

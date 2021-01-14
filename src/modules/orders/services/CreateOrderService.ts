@@ -90,21 +90,26 @@ class CreateOrderService {
     installments,
   }: IRequest): Promise<IOrder> {
     const createPagarmeCard = container.resolve(CreatePagarmeCardService);
+    console.log('console 0');
 
     const userExists = await this.usersRepository.findById(user_id);
 
     if (!userExists) {
       throw new AppError('There not find any user with the givan id');
     }
-
+    console.log('console 1');
     const existentCourses = await this.coursesRepository.findAllById(courses);
 
+    console.log('console 2');
     if (!existentCourses.length) {
       throw new AppError('Could not find course with the ids');
     }
 
+    console.log('console 3');
+
     const courseExistsIds = existentCourses.map(course => course.id);
 
+    console.log('console 4');
     const checkInexistentCourses = courses.filter(
       course => !courseExistsIds.includes(course.id),
     );
@@ -136,14 +141,18 @@ class CreateOrderService {
       userExists.person.phone_id_man,
     );
 
+    console.log('console 11');
     const newPhone = `${phone?.prefix}${phone?.number}`.replace(
       /([^0-9])/g,
       '',
     );
 
+    console.log('console 12');
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
     );
+
+    console.log('console 13');
 
     const {
       transaction_id,

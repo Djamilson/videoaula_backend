@@ -10,8 +10,15 @@ import AppError from '@shared/errors/AppError';
 export default class UsersController {
   public async create(req: Request, res: Response): Promise<Response> {
     try {
+      console.log('entou:::');
       const { name, email, password, nameGroup } = req.body;
-
+      console.log(
+        'name, email, password, groups',
+        name,
+        email,
+        password,
+        nameGroup,
+      );
       const createUser = container.resolve(CreateUserService);
       const listGroupByNameService = container.resolve(ListGroupByNameService);
 

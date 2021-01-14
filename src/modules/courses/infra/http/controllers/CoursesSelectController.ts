@@ -6,6 +6,8 @@ import ListCoursesService from '@modules/courses/services/ListCoursesSelectServi
 
 export default class CoursesSelectController {
   public async index(req: Request, res: Response): Promise<Response> {
+    console.log("Entrou ===>")
+
     const listCourses = container.resolve(ListCoursesService);
     const courses = await listCourses.execute();
 

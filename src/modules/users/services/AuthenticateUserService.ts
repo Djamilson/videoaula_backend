@@ -91,7 +91,7 @@ class AuthenticateUserService {
         status: userOut.person.status,
         privacy: userOut.person.privacy,
         avatar: userOut.person.avatar,
-        address_id_main: userOut.person.address_id_main,
+        address_id_man: userOut.person.address_id_man,
         avatar_url: userOut.person.getAvatarUrl,
       },
     };

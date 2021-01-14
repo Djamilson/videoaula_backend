@@ -7,9 +7,9 @@ import UpdateAnswerService from '@modules/disciplines/services/UpdateAnswerServi
 
 export default class CommentsAnswersController {
   public async show(request: Request, response: Response): Promise<Response> {
-    // const { zip_code } = request.params;
+    const { zip_code } = request.params;
 
-    // const user_id = request.user.id;
+    const user_id = request.user.id;
 
     return response.json({ fee: true });
   }
@@ -35,6 +35,7 @@ export default class CommentsAnswersController {
 
   public async update(req: Request, res: Response): Promise<Response> {
     try {
+      console.log('req.bodyreq.body:', req.body);
       const updateAnswerService = container.resolve(UpdateAnswerService);
 
       const { comment_answer, id } = req.body;

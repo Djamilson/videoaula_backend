@@ -25,6 +25,7 @@ class ListCoursesService {
 
     // const totalCount = await this.coursesRepository.count();
     const courses = await this.coursesRepository.findAll(paginationDTO);
+    console.log('courses: ', courses);
 
     return {
       totalCount: 0,

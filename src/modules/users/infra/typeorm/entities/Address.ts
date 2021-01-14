@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 
 import City from './City';
-import Person from './Person';
 
 @Entity('addresses')
 class Address {
@@ -30,10 +29,6 @@ class Address {
 
   @Column()
   neighborhood: string;
-
-  @OneToOne(() => Person)
-  @JoinColumn({ name: 'person_id' })
-  person: Person;
 
   @Column()
   person_id: string;

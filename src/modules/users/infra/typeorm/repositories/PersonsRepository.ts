@@ -4,11 +4,15 @@ import IUpdatePersonDTO from '@modules/users/dtos/IUpdatePersonDTO';
 import IPersonsRepository from '@modules/users/repositories/IPersonsRepository';
 
 import Person from '../entities/Person';
+import User from '../entities/User';
 
 class PersonsRepository implements IPersonsRepository {
+  private ormUserRepository: Repository<User>;
+
   private ormPersonRepository: Repository<Person>;
 
   constructor() {
+    this.ormUserRepository = getRepository(User);
     this.ormPersonRepository = getRepository(Person);
   }
 
@@ -23,7 +27,7 @@ class PersonsRepository implements IPersonsRepository {
   public async create(person: IUpdatePersonDTO): Promise<Person> {
     const newPerson = this.ormPersonRepository.create(person);
 
-    await this.ormPersonRepository.save(newPerson);
+    await this.ormUserRepository.save(newPerson);
 
     return newPerson;
   }

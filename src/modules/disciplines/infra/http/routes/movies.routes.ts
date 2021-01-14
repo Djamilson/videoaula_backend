@@ -14,10 +14,20 @@ const moviesController = new MoviesController();
 
 moviesRouter.use(ensureAuthenticated);
 
+/* moviesRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      title: Joi.string().required(),
+    },
+  }),
+  moviesController.create,
+); */
+
 moviesRouter.post('/', upload.single('file'), moviesController.create);
 
 moviesRouter.put('/', upload.single('file'), moviesController.update);
 
-moviesRouter.get('/:movie_id', moviesController.index);
+moviesRouter.get('/:discipline_id', moviesController.index);
 
 export default moviesRouter;

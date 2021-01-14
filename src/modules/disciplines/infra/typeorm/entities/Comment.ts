@@ -10,10 +10,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import User from '@modules/users/infra/typeorm/entities/User';
-
-import CommentAnswer from './CommentAnswer';
 import Movie from './Movie';
+import User from '@modules/users/infra/typeorm/entities/User';
+import CommentAnswer from './CommentAnswer';
 
 @Entity('comments')
 class Comment {

@@ -23,6 +23,8 @@ export default class TransactionsController {
   ): Promise<Response> {
     const { id } = request.params;
 
+    console.log('id: ', id);
+
     const cancelTransaction = container.resolve(CancelTransactionService);
 
     const transaction = await cancelTransaction.execute({ id });

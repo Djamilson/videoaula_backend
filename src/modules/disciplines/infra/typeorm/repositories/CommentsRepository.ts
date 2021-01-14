@@ -13,8 +13,11 @@ class CommentsRepository implements ICommentsRepository {
   }
 
   public async findById(id: string): Promise<Comment | undefined> {
+    console.log('Estou no findById:', id);
+
     const comment = await this.ormRepository.findOne(id);
 
+    console.log('Estou no findById:', comment);
     return comment;
   }
 
@@ -46,6 +49,7 @@ class CommentsRepository implements ICommentsRepository {
   }
 
   public async create(comment: ICreateCommentDTO): Promise<Comment> {
+    console.log('Estou no create:', comment);
     const newComment = this.ormRepository.create(comment);
 
     await this.ormRepository.save(newComment);

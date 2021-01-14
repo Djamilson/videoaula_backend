@@ -15,14 +15,17 @@ class UpdateThemeService {
   constructor(
     @inject('ThemesRepository')
     private themesRepository: IThemesRepository,
+
   ) {}
 
   public async execute({ id, theme }: IRequest): Promise<Theme> {
+    console.log('id, theme', id, theme);
     const existsTheme = await this.themesRepository.findById(id);
 
     if (!existsTheme) {
       throw new AppError('Not exists theme', 401);
     }
+
 
     existsTheme.theme = theme;
 

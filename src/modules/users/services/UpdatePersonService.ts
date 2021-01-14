@@ -13,7 +13,7 @@ interface IRequest {
   birdthDate: string;
   rg: string;
   rgss: string;
-  address_id_main: string;
+  address_id: string;
   phone_id_man: string;
 }
 
@@ -33,7 +33,7 @@ class UpdatePersonService {
     birdthDate,
     rg,
     rgss,
-    address_id_main,
+    address_id,
     phone_id_man,
   }: IRequest): Promise<Person> {
     const newBirdthDate = parse(birdthDate, 'dd/MM/yyyy', new Date());
@@ -44,16 +44,14 @@ class UpdatePersonService {
       throw new AppError('User not found');
     }
 
-    const { person } = user;
+    user.person.cpf = cpf;
+    user.person.rg = rg;
+    user.person.rgss = rgss;
+    user.person.birdth_date = newBirdthDate;
+    user.person.address_id_man = address_id;
+    user.person.phone_id_man = phone_id_man;
 
-    person.cpf = cpf;
-    person.rg = rg;
-    person.rgss = rgss;
-    person.birdth_date = newBirdthDate;
-    person.address_id_main = address_id_main;
-    person.phone_id_man = phone_id_man;
-
-    return this.personsRepository.save(person);
+    return this.personsRepository.save(user.person);
   }
 }
 

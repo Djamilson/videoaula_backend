@@ -43,6 +43,8 @@ class UpdateMovieService {
 
     movie.movie = filename;
     movie.title = title;
+    //movie.course_id = course_id;
+    //movie.discipline_id = discipline_id;
 
     await this.moviesRepository.save(movie);
 

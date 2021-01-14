@@ -2,10 +2,9 @@ import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import CreateMovieService from '@modules/disciplines/services/CreateMovieService';
-import SearchMovieForDisciplineIdService from '@modules/disciplines/services/SearchMovieForDisciplineIdService';
 import UpdateMovieService from '@modules/disciplines/services/UpdateMovieService';
-
+import CreateVidoService from '@modules/disciplines/services/CreateMovieService';
+import SearchMovieForDisciplineIdService from '@modules/disciplines/services/SearchMovieForDisciplineIdService';
 export default class MoviesController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { zip_code } = request.params;
@@ -16,14 +15,14 @@ export default class MoviesController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
-    const { movie_id } = request.params;
+    const { discipline_id } = request.params;
 
     const searchMovieForDisciplineIdService = container.resolve(
       SearchMovieForDisciplineIdService,
     );
 
     const movies = await searchMovieForDisciplineIdService.execute({
-      movie_id,
+      discipline_id,
     });
 
     return response.json(classToClass(movies));
@@ -31,30 +30,29 @@ export default class MoviesController {
 
   public async create(req: Request, res: Response): Promise<Response> {
     try {
-      const createMovieService = container.resolve(CreateMovieService);
+      const createMovieService = container.resolve(CreateVidoService);
 
-      const { title, movie, image } = req.body;
+      const { title, course_id, discipline_id, theme_id } = req.body;
+      const { filename } = req.file;
 
-      // const { filename } = req.file;
-      /*
       const movie = await createMovieService.execute({
         title,
+        course_id,
+        discipline_id,
+        theme_id,
         filename,
-      }); */
-
-      const newMovie = await createMovieService.execute({
-        title,
-        movie,
-        image,
       });
 
-      return res.json(newMovie);
+      return res.json(movie);
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
+    console.log('Controller', req.body);
+    console.log('Dados da Image:', req.user.id, req.file.filename);
+
     const { title, course_id, discipline_id } = req.body;
     const { filename } = req.file;
 

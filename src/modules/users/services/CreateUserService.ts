@@ -65,7 +65,7 @@ class CreateUserService {
       email,
     };
 
-    const user = await this.usersRepository.create({
+    const user = this.usersRepository.create({
       person: personSerealizable,
       password: hashedPassword,
       user_groups: groupExistsIds,

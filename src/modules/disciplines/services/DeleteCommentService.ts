@@ -16,6 +16,7 @@ class DeleteCommentService {
   ) {}
 
   public async execute({ idComment }: IRequest): Promise<void> {
+    console.log('Opa:', idComment);
     const checkCommentExists = await this.commentsRepository.findById(
       idComment,
     );
@@ -23,7 +24,7 @@ class DeleteCommentService {
     if (!checkCommentExists) {
       throw new AppError('Comment does not exist.');
     }
-
+    console.log('Opa: 2', idComment);
     await this.commentsRepository.delete(checkCommentExists.id);
   }
 }

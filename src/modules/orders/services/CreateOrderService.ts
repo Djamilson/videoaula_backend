@@ -1,9 +1,9 @@
 import { inject, injectable, container } from 'tsyringe';
 
-import Course from '@modules/courses/infra/typeorm/entities/Course';
-import ICoursesRepository from '@modules/courses/repositories/ICoursesRepository';
 import ITransactionsRepository from '@modules/payments/repositories/ITransactionsRepository';
 import CreatePagarmeCardService from '@modules/payments/services/CreatePagarmeCardService';
+import Course from '@modules/courses/infra/typeorm/entities/Course';
+import ICoursesRepository from '@modules/courses/repositories/ICoursesRepository';
 import IAddressesRepository from '@modules/users/repositories/IAddressesRepository';
 import IPhonesRepository from '@modules/users/repositories/IPhonesRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -18,7 +18,15 @@ interface IOrderCourse {
 }
 
 interface ICourse {
-  id: string;
+  itemCourse: {
+    stock: number;
+    course: {
+      id: string;
+      name: string;
+      stock: number;
+      price: number;
+    };
+  };
 }
 interface IRequest {
   user_id: string;
@@ -48,7 +56,7 @@ interface IOrder {
       status: boolean;
       privacy: boolean;
       avatar: string;
-      address_id_main: string;
+      address_id_man: string;
       phone_id_man: string;
     };
   };
@@ -90,69 +98,81 @@ class CreateOrderService {
     installments,
   }: IRequest): Promise<IOrder> {
     const createPagarmeCard = container.resolve(CreatePagarmeCardService);
-    console.log('console 0');
 
     const userExists = await this.usersRepository.findById(user_id);
 
     if (!userExists) {
       throw new AppError('There not find any user with the givan id');
     }
-    console.log('console 1');
+
     const existentCourses = await this.coursesRepository.findAllById(courses);
 
-    console.log('console 2');
     if (!existentCourses.length) {
       throw new AppError('Could not find course with the ids');
     }
 
-    console.log('console 3');
-
     const courseExistsIds = existentCourses.map(course => course.id);
 
-    console.log('console 4');
     const checkInexistentCourses = courses.filter(
-      course => !courseExistsIds.includes(course.id),
+      course => !courseExistsIds.includes(course.itemCourse.course.id),
     );
 
     if (checkInexistentCourses.length) {
       throw new AppError(
-        `Could not find course ${checkInexistentCourses[0].id}`,
+        `Could not find course ${checkInexistentCourses[0].itemCourse.course.id}`,
       );
     }
 
-    const serializadCourses = existentCourses.map(order_course => {
-      const oldPrice = existentCourses.filter(p => p.id === order_course.id)[0]
-        .price;
+    const findCoursesWithNoQuantity = courses.filter(item => {
+      return (
+        existentCourses.filter(p => p.id === item.itemCourse.course.id)[0]
+          .stock < item.itemCourse.stock
+      );
+    });
+    console.log('Estou no service 2=>>>');
+    if (findCoursesWithNoQuantity.length) {
+      throw new AppError(
+        `The quantity ${findCoursesWithNoQuantity[0].itemCourse.course.stock}
+        is not available for
+        ${findCoursesWithNoQuantity[0].itemCourse.course.id} `,
+      );
+    }
+
+    console.log('Estou no service 3=>>>List courses', courses);
+
+    const serializadCourses = courses.map(order_course => {
+      const oldPrice = existentCourses.filter(
+        p => p.id === order_course.itemCourse.course.id,
+      )[0].price;
+
+      console.log('oldPrice=>>> ', oldPrice);
 
       return {
-        name: order_course.name,
-        subtotal: oldPrice,
-        course_id: order_course.id,
-        quantity: 1,
+        name: order_course.itemCourse.course.name,
+        subtotal: oldPrice * order_course.itemCourse.stock,
+        course_id: order_course.itemCourse.course.id,
+        quantity: order_course.itemCourse.stock,
         price: oldPrice,
       };
     });
+    console.log('SerializadCourses =>>>', serializadCourses);
 
     const total = serializadCourses.reduce((totalsum, item) => {
-      return totalsum + item.price;
+      return totalsum + item.price * item.quantity;
     }, 0);
 
     const phone = await this.phonesRepository.findById(
       userExists.person.phone_id_man,
     );
 
-    console.log('console 11');
     const newPhone = `${phone?.prefix}${phone?.number}`.replace(
       /([^0-9])/g,
       '',
     );
 
-    console.log('console 12');
     const address = await this.addressesRepository.findById(
-      userExists.person.address_id_main,
+      userExists.person.address_id_man,
     );
-
-    console.log('console 13');
 
     const {
       transaction_id,
@@ -173,16 +193,7 @@ class CreateOrderService {
       total: total + fee,
     });
 
-    console.log(
-      'Pasoou::::',
-      transaction_id,
-      status,
-      authorization_code,
-      authorized_amount,
-      brand,
-      tid,
-    );
-
+    console.log('Estou no service pagamento =>>>');
     const newOrder = await this.ordersRepository.create({
       user: userExists,
       courses: serializadCourses,
@@ -190,11 +201,28 @@ class CreateOrderService {
       fee,
     });
 
+    console.log('Estou no service pagamento =>>> Find');
     const { id: order_id, order_courses } = newOrder;
+
+    const orderedCoursesQuantity = order_courses.map(course => ({
+      id: course.course_id,
+      stock:
+        existentCourses.filter(p => p.id === course.course_id)[0].stock -
+        course.quantity,
+    }));
+
+    await this.coursesRepository.updateQuantity(orderedCoursesQuantity);
 
     const order_courseIds = order_courses.map((ord_course: IOrderCourse) => {
       return {
-        id: ord_course.course_id,
+        itemCourse: {
+          stock: 0,
+          course: {
+            id: ord_course.course_id,
+            name: '',
+            price: 0,
+          },
+        },
       };
     });
 
@@ -221,7 +249,7 @@ class CreateOrderService {
       installments,
       order_id,
     });
-    console.log('Chegou 1:::');
+
     const order = {
       user: {
         id: newOrder.user.id,
@@ -232,7 +260,7 @@ class CreateOrderService {
           status: newOrder.user.person.status,
           privacy: newOrder.user.person.privacy,
           avatar: newOrder.user.person.avatar,
-          address_id_main: newOrder.user.person.address_id_main,
+          address_id_man: newOrder.user.person.address_id_man,
           phone_id_man: newOrder.user.person.phone_id_man,
         },
       },

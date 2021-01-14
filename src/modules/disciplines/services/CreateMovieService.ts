@@ -1,15 +1,20 @@
 import { injectable, inject } from 'tsyringe';
 
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import AppError from '@shared/errors/AppError';
 
-import Movie from '../infra/typeorm/entities/Movie';
+import CourseDiscipline from '../infra/typeorm/entities/CourseDiscipline';
 import IMoviesRepository from '../repositories/IMoviesRepository';
+
+import ICoursesDisciplinesRepository from '../repositories/ICoursesDisciplinesRepository';
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import IThemesRepository from '../repositories/IThemesRepository';
 
 interface IRequest {
   title: string;
-  movie: string;
-  image: string;
+  course_id: string;
+  discipline_id: string;
+  theme_id: string;
+  filename: string;
 }
 
 @injectable()
@@ -18,33 +23,48 @@ class CreateMovieService {
     @inject('MoviesRepository')
     private moviesRepository: IMoviesRepository,
 
+    @inject('ThemesRepository')
+    private themesRepository: IThemesRepository,
+
+    @inject('CoursesDisciplinesRepository')
+    private coursesDisciplinesRepository: ICoursesDisciplinesRepository,
+
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
-
-    @inject('StorageProviderVimeo')
-    private storageProviderVimeo: IStorageProvider,
   ) {}
 
-  public async execute({ title, movie, image }: IRequest): Promise<Movie> {
-    const serealizableMovie = movie.replace('https://vimeo.com/', '');
-
+  public async execute({
+    title,
+    course_id,
+    discipline_id,
+    theme_id,
+    filename,
+  }: IRequest): Promise<CourseDiscipline> {
     const checkMovieExists = await this.moviesRepository.findByTitle(title);
 
     if (checkMovieExists) {
       throw new AppError('Movie already used.');
     }
 
-    // await this.storageProvider.saveFile(filename);
-    // await this.storageProviderVimeo.saveFile(filename);
-    // console.log('Vou inicia a criação do video vimeo', filename);
+    const existsTheme = await this.themesRepository.findById(theme_id);
 
-    const newMovie = await this.moviesRepository.create({
+    if (!existsTheme) {
+      throw new AppError('Theme not exists');
+    }
+
+    await this.storageProvider.saveFile(filename);
+
+    const { id } = await this.moviesRepository.create({
       title,
-      movie: serealizableMovie,
-      image,
+      movie: filename,
     });
 
-    return newMovie;
+    const movie = await this.coursesDisciplinesRepository.create({
+      course_id,
+      discipline_id,
+    });
+
+    return movie;
   }
 }
 

@@ -20,6 +20,8 @@ export default class AddressesController {
     try {
       const user_id = req.user.id;
 
+      console.log('person_id:', req.user);
+
       const {
         number,
         street,
@@ -29,6 +31,16 @@ export default class AddressesController {
         city_id,
       } = req.body;
 
+      console.log(
+        'user:: ',
+        number,
+        street,
+        complement,
+        zip_code,
+        neighborhood,
+        city_id,
+        user_id,
+      );
       const createAddress = container.resolve(CreateAddressService);
       // const createUserGroups = container.resolve(CreateUserGroupsService);
 

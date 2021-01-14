@@ -11,8 +11,8 @@ import IMailProvider from '../models/IMailProvider';
 
 // configure AWS SDK
 aws.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID_MAIL,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_MAIL,
   region: process.env.AWS_DEFAULT_REGION,
 });
 

@@ -11,6 +11,7 @@ import {
 
 import uploadConfig from '@config/upload';
 
+import Address from './Address';
 import Phone from './Phone';
 
 @Entity('persons')
@@ -45,23 +46,19 @@ class Person {
   @Column()
   avatar: string;
 
+  @OneToOne(() => Address)
+  @JoinColumn({ name: 'address_id_man' })
+  address: Address;
+
+  @Column()
+  address_id_man: string;
+
   @OneToOne(() => Phone)
   @JoinColumn({ name: 'phone_id_man' })
   phone: Phone;
 
-  /* @OneToOne(() => Address, (address: Address) => address.person, {
-    cascade: false,
-    eager: false,
-    nullable: true,
-  })
-  @JoinColumn({ name: 'address_id_main' })
-  address: Address;
-*/
   @Column()
   phone_id_man: string;
-
-  @Column()
-  address_id_main: string;
 
   @CreateDateColumn()
   created_at: Date;

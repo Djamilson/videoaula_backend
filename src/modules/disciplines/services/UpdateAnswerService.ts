@@ -27,6 +27,8 @@ class UpdateAnswerService {
       throw new AppError('Comment not found');
     }
 
+    console.log('comment_answer::', comment_answer);
+
     answerExit.comment_answer = comment_answer;
 
     return this.commentsAnswersRepository.save(answerExit);

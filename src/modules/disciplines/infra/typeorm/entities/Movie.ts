@@ -9,9 +9,7 @@ import {
 } from 'typeorm';
 
 import uploadConfig from '@config/upload';
-
 import Comment from './Comment';
-
 @Entity('movies')
 class Movie {
   @PrimaryGeneratedColumn('uuid')
@@ -23,9 +21,6 @@ class Movie {
   @Column()
   movie: string;
 
-  @Column()
-  image: string;
-
   @OneToMany(() => Comment, comment => comment.movie)
   comments: Comment[];
 
@@ -34,19 +29,11 @@ class Movie {
     if (!this.movie) {
       return null;
     }
-    return `https://${process.env.VIMEO_NAME}/${this.movie}`;
-  }
-
-  @Expose({ name: 'image_url' })
-  getImageUrl(): string | null {
-    if (!this.movie) {
-      return null;
-    }
     switch (uploadConfig.driver) {
       case 'disk':
-        return `${process.env.APP_API_URL}/files/${this.image}`;
+        return `${process.env.APP_API_URL}/files/${this.movie}`;
       case 's3':
-        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.image}`;
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.movie}`;
       default:
         return null;
     }

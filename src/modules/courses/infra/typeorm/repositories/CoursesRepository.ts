@@ -8,7 +8,14 @@ import ICoursesRepository from '@modules/courses/repositories/ICoursesRepository
 import Course from '../entities/Course';
 
 interface ICourse {
-  id: string;
+  itemCourse: {
+    stock: number;
+    course: {
+      id: string;
+      name: string;
+      price: number;
+    };
+  };
 }
 class CoursesRepository implements ICoursesRepository {
   private ormRepository: Repository<Course>;
@@ -18,7 +25,7 @@ class CoursesRepository implements ICoursesRepository {
   }
 
   public async findAllById(courses: ICourse[]): Promise<Course[]> {
-    const courseIds = courses.map(item => item.id);
+    const courseIds = courses.map(item => item.itemCourse.course.id);
 
     const existsCourses = await this.ormRepository.find({
       where: {

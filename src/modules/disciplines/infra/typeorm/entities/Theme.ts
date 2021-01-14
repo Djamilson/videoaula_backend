@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Expose, Exclude } from 'class-transformer';
 import {
   Entity,
   Column,

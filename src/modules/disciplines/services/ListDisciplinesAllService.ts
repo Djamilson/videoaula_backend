@@ -15,6 +15,7 @@ class ListDisciplinesAllService {
   ) {}
 
   public async execute(): Promise<IDiscipline[] | undefined> {
+    console.log("Cheguei:")
     const disciplines = await this.disciplinesRepository.findAllDiscipline();
 
     return disciplines;

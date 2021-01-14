@@ -25,7 +25,7 @@ class UpdateCoursesService {
     if (!courseExist) {
       throw new AppError('Course not found');
     }
-
+    console.log('req.body:', id, name, stock, price);
     courseExist.name = name;
     courseExist.price = price;
     courseExist.stock = stock;

@@ -36,6 +36,6 @@ disciplinesRouter.put(
 
 disciplinesRouter.get('/', disciplinesController.index);
 // para o select dentro do add disciplina no curso
-disciplinesRouter.get('/list/all', allDisciplinesController.index);
+disciplinesRouter.get('/all', allDisciplinesController.index);
 
 export default disciplinesRouter;

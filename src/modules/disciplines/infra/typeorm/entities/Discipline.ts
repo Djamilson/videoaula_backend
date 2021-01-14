@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-
 import CourseDiscipline from './CourseDiscipline';
+import Movie from './Movie';
 
 @Entity('disciplines')
 class Discipline {

@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,8 +10,8 @@ import {
 } from 'typeorm';
 
 import Course from '@modules/courses/infra/typeorm/entities/Course';
-
 import Discipline from './Discipline';
+import { Exclude } from 'class-transformer';
 import Theme from './Theme';
 
 @Entity('courses_disciplines')

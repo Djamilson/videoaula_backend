@@ -28,6 +28,8 @@ class CancelTransactionService {
       throw new AppError('Transaction not found');
     }
 
+    console.log('Init transaction:>>>> ');
+
     try {
       const client = await pagarme.client.connect({
         api_key: process.env.PAGARME_API_KEY,
@@ -35,12 +37,21 @@ class CancelTransactionService {
 
       const { transaction_id } = transaction;
 
-      await client.transactions.refund('recipientId', transaction);
-    } catch (error) {}
+      await client.transactions.refund({
+        id: transaction_id,
+      });
+
+      console.log('Fez a Transaction', transaction_id);
+    } catch (error) {
+      console.log('VVV:', error);
+    }
+
+    console.log('vou fazer a update');
 
     transaction.order.canceled_at = new Date();
 
     await this.ordersRepository.save(transaction.order);
+    console.log('fez a update ==>>');
 
     transaction.status = 'refund';
 

@@ -7,7 +7,6 @@ import coursesDisciplinesRouter from '@modules/disciplines/infra/http/routes/cou
 import disciplinesRouter from '@modules/disciplines/infra/http/routes/disciplines.routes';
 import moviesRouter from '@modules/disciplines/infra/http/routes/movies.routes';
 import themesRouter from '@modules/disciplines/infra/http/routes/themes.routes';
-import feesRouter from '@modules/free/infra/http/routes/fees.routes';
 import ordersCoursesRouter from '@modules/orders/infra/http/routes/orders.courses.routes';
 import ordersRouter from '@modules/orders/infra/http/routes/orders.routes';
 import transactionsRouter from '@modules/payments/infra/http/routes/transactions.routes';
@@ -46,8 +45,6 @@ routes.use('/transactions', transactionsRouter);
 
 routes.use('/cities', citiesRouter);
 routes.use('/states', statesRouter);
-
-routes.use('/fees', feesRouter);
 
 routes.use('/courses', coursesRouter);
 routes.use('/disciplines', disciplinesRouter);

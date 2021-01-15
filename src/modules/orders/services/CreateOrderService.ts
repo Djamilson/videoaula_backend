@@ -147,6 +147,7 @@ class CreateOrderService {
       '',
     );
 
+    console.log('console 12');
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
     );

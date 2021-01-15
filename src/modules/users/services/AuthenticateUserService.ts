@@ -52,6 +52,7 @@ class AuthenticateUserService {
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
+    console.log('email, password::', email, password);
     const userOut = await this.usersRepository.findByEmail(email);
 
     if (!userOut) {

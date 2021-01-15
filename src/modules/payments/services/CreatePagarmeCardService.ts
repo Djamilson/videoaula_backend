@@ -56,9 +56,22 @@ class CreatePagarmeCardService {
     serializadCourses,
     total,
   }: IRequest): Promise<IPagarme> {
+    console.log(
+      'fee,card_hash, userExists, newPhone,  address,    serializadCourses, total',
+      fee,
+      card_hash,
+      userExists,
+      newPhone,
+      address,
+      serializadCourses,
+      total,
+    );
+    console.log('process.env.PAGARME_API_KEY:', process.env.PAGARME_API_KEY);
+
     const client = await pagarme.client.connect({
       api_key: process.env.PAGARME_API_KEY,
     });
+    console.log('client:', client);
 
     const pagarmeTransaction = await client.transactions.create({
       api_key: process.env.PAGARME_API_KEY,
@@ -121,6 +134,8 @@ class CreatePagarmeCardService {
         tangible: true,
       })),
     });
+
+      console.log('pagarmeTransaction:', pagarmeTransaction);
 
     const {
       id: transaction_id,

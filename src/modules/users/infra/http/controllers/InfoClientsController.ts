@@ -3,62 +3,33 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateAddressService from '@modules/users/services/CreateAddressService';
-import CreateListPhoneService from '@modules/users/services/CreateListPhoneService';
+import CreatePhoneService from '@modules/users/services/CreatePhoneService';
 import UpdatePersonService from '@modules/users/services/UpdatePersonService';
 
-export default class InfoPersonController {
-  public async update(req: Request, res: Response): Promise<Response> {
+export default class InfoClientsController {
+  public async create(req: Request, res: Response): Promise<Response> {
     try {
       const user_id = req.user.id;
-      const {
-        cpf,
-        birdthDate,
-        rg,
-        rgss,
-        street,
-        number,
-        complement,
-        neighborhood,
-        zip_code,
-        city_id,
-        phones,
-      } = req.body;
+      const { documents, address, phone } = req.body;
 
       const createAddress = container.resolve(CreateAddressService);
       const updatePerson = container.resolve(UpdatePersonService);
-      const createListPhone = container.resolve(CreateListPhoneService);
+      const createPhone = container.resolve(CreatePhoneService);
 
-      console.log('req.body:: ', req.body);
-
-      const { id: address_id } = await createAddress.execute({
-        number,
-        street,
-        complement,
-        zip_code,
-        neighborhood,
-        user_id,
-        city_id,
-      });
-
-      console.log('address_id::', address_id);
-
-      const phone = await createListPhone.execute({
-        phones,
+      const { id: address_id_main } = await createAddress.execute({
+        ...address,
         user_id,
       });
 
-      const phone_id_man = phone[0].id;
-
-      console.log('Meu phone::', phone[0].id);
-      console.log('phone_id_man::', phone_id_man);
+      const { id: phone_id_man } = await createPhone.execute({
+        ...phone,
+        user_id,
+      });
 
       const person = await updatePerson.execute({
         user_id,
-        cpf,
-        birdthDate,
-        rg,
-        rgss,
-        address_id,
+        ...documents,
+        address_id_main,
         phone_id_man,
       });
 

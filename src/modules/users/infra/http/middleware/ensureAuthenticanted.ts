@@ -13,9 +13,9 @@ interface ITokenPayload {
 
 function checkToken(exp: any) {
   if (Date.now() <= exp * 1000) {
-    console.log(true, 'token is not expired');
+    // console.log(true, 'token is not expired');
   } else {
-    console.log(false, 'token is expired');
+    // console.log(false, 'token is expired');
   }
 }
 
@@ -32,7 +32,6 @@ export default function ensureAuthenticated(
   const [, token] = authHeader.split(' ');
 
   try {
-
     const decoded = verify(token, authConfig.jwt.secret);
 
     const { sub } = decoded as ITokenPayload;
@@ -43,16 +42,11 @@ export default function ensureAuthenticated(
 
     return next();
   } catch (err) {
-
     if (err.name === 'TokenExpiredError') {
-      /*const decoded = verify(token, authConfig.jwt.secret, {
+      /* const decoded = verify(token, authConfig.jwt.secret, {
         ignoreExpiration: true,
-      });*/
-
-      console.log('===>> meu decoded', err.name);
-
+      }); */
       // your code
-      console.log('renovar token');
     }
 
     throw new AppError('Invalid JWT token', 401);

@@ -22,7 +22,7 @@ commentsAnswersRouter.post(
 );
 
 commentsAnswersRouter.put(
-  '/',
+  '/me',
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().required(),
@@ -32,6 +32,9 @@ commentsAnswersRouter.put(
   commentsAnswersController.update,
 );
 
-commentsAnswersRouter.delete('/:idAnswer', commentsAnswersController.destroy);
+commentsAnswersRouter.delete(
+  '/me/:idAnswer',
+  commentsAnswersController.destroy,
+);
 
 export default commentsAnswersRouter;

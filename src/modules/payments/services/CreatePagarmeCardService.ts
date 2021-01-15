@@ -37,9 +37,9 @@ interface IRequest {
 interface IPagarme {
   transaction_id: string;
   status: string;
-  authorization_code: number;
+  authorization_code: string;
   brand: string;
-  authorized_amount: number;
+  authorized_amount: string;
   tid: string;
 }
 
@@ -62,9 +62,10 @@ class CreatePagarmeCardService {
 
     const pagarmeTransaction = await client.transactions.create({
       api_key: process.env.PAGARME_API_KEY,
-      capture: 'false',
+      capture: false,
       amount: parseInt(String(total * 100), 10),
       card_hash,
+
       customer: {
         external_id: userExists.id,
         name: userExists.person.name,
@@ -88,10 +89,11 @@ class CreatePagarmeCardService {
         name: userExists.person.name,
         address: {
           country: 'br',
-          state: address?.city.state.name,
-          city: address?.city.name,
+          state: String(address?.city.state.name),
+          city: String(address?.city.name),
           neighborhood: address?.neighborhood,
-          street: address?.street,
+          street: String(address?.street),
+          complementary: String(address?.complement),
           street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
           zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
         },
@@ -102,19 +104,20 @@ class CreatePagarmeCardService {
         expedited: true,
         address: {
           country: 'br',
-          state: address?.city.state.name,
-          city: address?.city.name,
+          state: String(address?.city.state.name),
+          city: String(address?.city.name),
           neighborhood: address?.neighborhood,
-          street: address?.street,
+          street: String(address?.street),
+          complementary: String(address?.complement),
           street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
           zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
         },
       },
-      items: serializadCourses.map((item: any) => ({
-        id: String(item.course_id),
-        title: item.name,
-        unit_price: parseInt(String(item.price * 100), 10),
-        quantity: item.quantity,
+      items: serializadCourses.map((item_course: any) => ({
+        id: String(item_course.course_id),
+        title: item_course.name,
+        unit_price: parseInt(String(item_course.price * 100), 10),
+        quantity: item_course.quantity,
         tangible: true,
       })),
     });
@@ -129,11 +132,11 @@ class CreatePagarmeCardService {
     } = pagarmeTransaction;
 
     return {
-      transaction_id,
+      transaction_id: String(transaction_id),
       status,
       authorization_code,
       brand,
-      authorized_amount,
+      authorized_amount: String(authorized_amount),
       tid,
     };
   }

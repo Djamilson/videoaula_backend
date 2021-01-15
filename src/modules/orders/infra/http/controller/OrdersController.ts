@@ -28,9 +28,8 @@ export default class OrdersController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    // const { user_id, courses } = request.body;
-
     const user_id = request.user.id;
+    console.log('request.body::', request.body);
     const { courses, fee, card_hash, installments } = request.body;
 
     const createOrder = container.resolve(CreateOrderService);
@@ -43,7 +42,8 @@ export default class OrdersController {
       installments,
     });
 
-    console.log('passou:::: final', customer);
+    console.log('Finalizaou');
+
     return response.json(customer);
   }
 }

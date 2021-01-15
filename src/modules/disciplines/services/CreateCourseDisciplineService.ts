@@ -21,8 +21,6 @@ class CreateCourseDisciplineService {
     course_id,
     discipline_id,
   }: IRequest): Promise<CourseDiscipline> {
-    console.log(' execute:: ', course_id, discipline_id);
-
     const checkCourseDisciplineExists = await this.coursesDisciplinesRepository.findByCourseDiscipline(
       course_id,
       discipline_id,

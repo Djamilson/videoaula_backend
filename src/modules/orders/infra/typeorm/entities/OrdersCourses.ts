@@ -8,8 +8,8 @@ import {
   Column,
 } from 'typeorm';
 
-import Order from '@modules/orders/infra/typeorm/entities/Order';
 import Course from '@modules/courses/infra/typeorm/entities/Course';
+import Order from '@modules/orders/infra/typeorm/entities/Order';
 
 @Entity('orders_courses')
 class OrdersCourses {

@@ -1,15 +1,19 @@
 import { Router } from 'express';
 import multer from 'multer';
-import uploadConfig from '@config/upload';
-const upload = multer(uploadConfig.multer);
 
 import ensureAuthenticated from '@modules/users/infra/http/middleware/ensureAuthenticanted';
 
+import uploadConfig from '@config/upload';
+
+import ThemesClassController from '../controllers/ThemesClassController';
 import ThemesController from '../controllers/ThemesController';
 import ThemesCourseDisciplineController from '../controllers/ThemesCourseDisciplineController';
 
+const upload = multer(uploadConfig.multer);
+
 const themesRouter = Router();
 const themesController = new ThemesController();
+const themesClassController = new ThemesClassController();
 
 const themesCourseDisciplineController = new ThemesCourseDisciplineController();
 
@@ -37,17 +41,22 @@ themesRouter.put(
     },
   }),
   themesController.update,
-);*/
+); */
 
-themesRouter.post('/', upload.single('file'), themesController.create);
+themesRouter.post('/', themesController.create);
 themesRouter.put('/', upload.single('file'), themesController.update);
 
 themesRouter.get('/', themesController.index);
 themesRouter.get('/:discipline_id', themesController.show);
 
 themesRouter.get(
-  '/course/discipline/:course_discipline_id',
+  '/courses/disciplines/:course_id/:discipline_id',
   themesCourseDisciplineController.index,
+);
+
+themesRouter.get(
+  '/disciplines/:course_discipline_id',
+  themesClassController.index,
 );
 
 export default themesRouter;

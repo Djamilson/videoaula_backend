@@ -9,8 +9,8 @@ import IStorageProvider from '../models/IStorageProvider';
 
 // configure AWS SDK
 aws.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID_S3,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_S3,
+  accessKeyId: process.env.WS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_DEFAULT_REGION,
 });
 
@@ -23,8 +23,7 @@ class S3StorageProvider implements IStorageProvider {
 
   public async saveFile(file: string): Promise<string> {
     const originalPath = path.resolve(uploadConfig.tmpFolder, file);
-    console.log('Vou para o S3', file);
-    console.log('originalPath', originalPath);
+
     const ContentType = mime.getType(originalPath);
 
     if (!ContentType) {
@@ -43,18 +42,10 @@ class S3StorageProvider implements IStorageProvider {
       })
       .promise()
       .catch(err => {
-        console.log('Upload failed:', err);
+        // console.log('Upload failed:', err);
       });
 
-    console.log('Passou do S3');
-    /* .then(function (data) {
-        console.log(`Successfully uploaded to ${data}`);
-      })
-      .catch(function (err) {
-        console.error(err, err.stack);
-      }) */ await fs.promises.unlink(
-      originalPath,
-    );
+    await fs.promises.unlink(originalPath);
 
     return file;
   }

@@ -9,7 +9,7 @@ const ordersController = new OrdersController();
 
 ordersRouter.use(ensureAuthenticated);
 
-ordersRouter.post('/', ordersController.create);
+ordersRouter.post('/payments', ordersController.create);
 ordersRouter.get('/', ordersController.index);
 ordersRouter.get('/:id', ordersController.show);
 

@@ -1,23 +1,20 @@
-import { injectable, inject } from 'tsyringe';
+import { injectable, inject, container } from 'tsyringe';
+
+import CreateMovieService from '@modules/disciplines/services/CreateMovieService';
 
 import AppError from '@shared/errors/AppError';
 
-import ICoursesDisciplinesRepository from '../repositories/ICoursesDisciplinesRepository';
-import CourseDiscipline from '../infra/typeorm/entities/CourseDiscipline';
-
-import IMoviesRepository from '../repositories/IMoviesRepository';
-
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-
-import IThemesRepository from '../repositories/IThemesRepository';
 import Theme from '../infra/typeorm/entities/Theme';
+import ICoursesDisciplinesRepository from '../repositories/ICoursesDisciplinesRepository';
+import IThemesRepository from '../repositories/IThemesRepository';
 
 interface IRequest {
   course_id: string;
   discipline_id: string;
   theme: string;
   title: string;
-  filename: string;
+  movie: string;
+  image: string;
 }
 
 @injectable()
@@ -28,9 +25,6 @@ class CreateThemeService {
 
     @inject('CoursesDisciplinesRepository')
     private coursesDisciplinesRepository: ICoursesDisciplinesRepository,
-
-    @inject('MoviesRepository')
-    private moviesRepository: IMoviesRepository,
   ) {}
 
   public async execute({
@@ -38,7 +32,8 @@ class CreateThemeService {
     theme,
     course_id,
     discipline_id,
-    filename,
+    movie,
+    image,
   }: IRequest): Promise<Theme> {
     const checkCourseDisciplineExists = await this.coursesDisciplinesRepository.findByCourseDiscipline(
       course_id,
@@ -48,7 +43,7 @@ class CreateThemeService {
     if (!checkCourseDisciplineExists) {
       throw new AppError('CourseDiscipline not exist.');
     }
-    console.log('Passou 2');
+
     const { id: course_discipline_id } = checkCourseDisciplineExists;
 
     const checkThemeExists = await this.themesRepository.findByTitle(theme);
@@ -57,9 +52,12 @@ class CreateThemeService {
       throw new AppError('Movie already used.');
     }
 
-    const { id } = await this.moviesRepository.create({
+    const createMovieService = container.resolve(CreateMovieService);
+
+    const { id } = await createMovieService.execute({
       title,
-      movie: filename,
+      image,
+      movie,
     });
 
     const objectTheme = await this.themesRepository.create({

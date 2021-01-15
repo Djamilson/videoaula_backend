@@ -78,26 +78,22 @@ class CreatePagarmeCardService {
       capture: false,
       amount: parseInt(String(total * 100), 10),
       card_hash,
-
       customer: {
-        external_id: userExists.id,
-        name: userExists.person.name,
-        email: userExists.person.email,
+        external_id: '#123456789',
+        name: 'João das Neves',
         type: 'individual',
         country: 'br',
+        email: 'joaoneves@norte.com',
         documents: [
           {
             type: 'cpf',
-            number: userExists.person.cpf,
-          },
-          {
-            type: 'rg',
-            number: userExists.person.rg,
+            number: '30621143049',
           },
         ],
-        phone_numbers: [`+55${newPhone}`],
-        birthday: format(userExists.person.birdth_date, 'yyyy-MM-dd'),
+        phone_numbers: ['+5511999999999', '+5511888888888'],
+        birthday: '1985-01-01',
       },
+
       billing: {
         name: userExists.person.name,
         address: {
@@ -135,7 +131,7 @@ class CreatePagarmeCardService {
       })),
     });
 
-      console.log('pagarmeTransaction:', pagarmeTransaction);
+    console.log('pagarmeTransaction:', pagarmeTransaction);
 
     const {
       id: transaction_id,

@@ -16,7 +16,17 @@ jobs:
       with:
         node-version: 12.x  
         
-    
+    - name: Delete production scripts
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY}}  
+        script: |
+          cd ~/app/videoaula_backend
+          rm -rf dist
+          rm -rf src
             
     - name: Install dependencies
       run: yarn

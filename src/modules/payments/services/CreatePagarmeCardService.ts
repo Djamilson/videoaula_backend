@@ -56,10 +56,15 @@ class CreatePagarmeCardService {
     serializadCourses,
     total,
   }: IRequest): Promise<IPagarme> {
-    const client = await pagarme.client.connect({
-      api_key: process.env.PAGARME_API_KEY,
-    });
-    console.log('Pegou o client: init transaction ');
+    let client = null;
+
+    try {
+      client = await pagarme.client.connect({
+        api_key: process.env.PAGARME_API_KEY,
+      });
+    } catch (e) {
+      console.log('Erro client:', e.response);
+    }
 
     let pagarmeTransaction = null;
 

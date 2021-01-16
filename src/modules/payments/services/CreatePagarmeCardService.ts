@@ -71,7 +71,7 @@ class CreatePagarmeCardService {
     const client = await pagarme.client.connect({
       api_key: process.env.PAGARME_API_KEY,
     });
-    console.log('client:', client);
+    console.log('Pegou o client: init transaction ');
 
     const pagarmeTransaction = await client.transactions.create({
       api_key: process.env.PAGARME_API_KEY,
@@ -79,19 +79,23 @@ class CreatePagarmeCardService {
       amount: parseInt(String(total * 100), 10),
       card_hash,
       customer: {
-        external_id: '#123456789',
-        name: 'João das Neves',
+        external_id: userExists.id,
+        name: userExists.person.name,
+        email: userExists.person.email,
         type: 'individual',
         country: 'br',
-        email: 'joaoneves@norte.com',
         documents: [
           {
             type: 'cpf',
-            number: '30621143049',
+            number: userExists.person.cpf,
+          },
+          {
+            type: 'rg',
+            number: userExists.person.rg,
           },
         ],
-        phone_numbers: ['+5511999999999', '+5511888888888'],
-        birthday: '1985-01-01',
+        phone_numbers: [`+55${newPhone}`],
+        birthday: format(userExists.person.birdth_date, 'yyyy-MM-dd'),
       },
 
       billing: {
@@ -131,7 +135,7 @@ class CreatePagarmeCardService {
       })),
     });
 
-    console.log('pagarmeTransaction:', pagarmeTransaction);
+    console.log('Finalizou a transaction', pagarmeTransaction);
 
     const {
       id: transaction_id,

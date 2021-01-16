@@ -18,8 +18,8 @@ import routes from './routes';
 
 const app = express();
 
-// app.use(cors());
-
+app.use(cors());
+/*
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', String(true));
 
   next();
-});
+}); */
 
 app.use(express.json());
 

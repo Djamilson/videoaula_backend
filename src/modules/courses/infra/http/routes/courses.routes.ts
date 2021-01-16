@@ -26,7 +26,7 @@ coursesRouter.get('/:id', coursesController.show);
 coursesRouter.use(ensureAuthenticated);
 
 coursesRouter.post(
-  '/',
+  '/new',
   celebrate({
     [Segments.BODY]: {
       name: Joi.string(),

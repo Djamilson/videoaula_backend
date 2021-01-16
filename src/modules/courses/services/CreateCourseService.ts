@@ -29,7 +29,10 @@ class CreateCourseService {
     image,
     stock,
   }: IRequest): Promise<Course> {
+    console.log('Passou 2', name, price, image, stock);
+
     const courseExists = await this.coursesRepository.findByName(name);
+    console.log('Passou 3', name, price, image, stock);
 
     if (courseExists) {
       throw new AppError('There is already one course with this name');
@@ -38,6 +41,7 @@ class CreateCourseService {
     if (image !== '') {
       await this.storageProvider.saveFile(image);
     }
+    console.log('Passou 4');
 
     const course = this.coursesRepository.create({
       name,
@@ -45,6 +49,7 @@ class CreateCourseService {
       price,
       stock,
     });
+    console.log('Passou 5');
 
     return course;
   }

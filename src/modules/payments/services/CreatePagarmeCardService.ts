@@ -67,6 +67,32 @@ class CreatePagarmeCardService {
     }
 
     let pagarmeTransaction = null;
+    console.log('process.env.PAGARME_API_KEY', process.env.PAGARME_API_KEY);
+    console.log('serializadCourses:', serializadCourses);
+
+    console.log(
+      'data:::',
+      process.env.PAGARME_API_KEY,
+      parseInt(String(total * 100), 10),
+      card_hash,
+    );
+
+    console.log(
+      '====> 2 customer',
+
+      userExists.id,
+      userExists.person.name,
+      userExists.person.email,
+    );
+
+    console.log(
+      '==>> 3 documents',
+      userExists.person.cpf,
+      userExists.person.rg,
+
+      [`+55${newPhone}`],
+      format(userExists.person.birdth_date, 'yyyy-MM-dd'),
+    );
 
     try {
       pagarmeTransaction = await client.transactions.create({

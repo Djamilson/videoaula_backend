@@ -157,6 +157,7 @@ class CreatePagarmeCardService {
         })),
       });
     } catch (error) {
+      console.log('Meus erros: ', error.response.errors);
       console.log('A client pool error occurred:', error);
       return error;
     }

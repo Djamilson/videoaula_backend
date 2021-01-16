@@ -152,7 +152,6 @@ class CreateOrderService {
       userExists.person.address_id_main,
     );
 
-    
     const {
       transaction_id,
       status,

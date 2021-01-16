@@ -17,5 +17,5 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "node_modules/pagarme-js-types/index.d.ts"]
+  "include": ["src"]
 }

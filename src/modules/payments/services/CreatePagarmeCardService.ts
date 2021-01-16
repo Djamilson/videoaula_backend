@@ -56,16 +56,6 @@ class CreatePagarmeCardService {
     serializadCourses,
     total,
   }: IRequest): Promise<IPagarme> {
-    console.log(
-      'fee,card_hash, userExists, newPhone,  address,    serializadCourses, total',
-      fee,
-      card_hash,
-      userExists,
-      newPhone,
-      address,
-      serializadCourses,
-      total,
-    );
     console.log('process.env.PAGARME_API_KEY:', process.env.PAGARME_API_KEY);
 
     const client = await pagarme.client.connect({

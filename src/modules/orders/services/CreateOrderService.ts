@@ -152,19 +152,7 @@ class CreateOrderService {
       userExists.person.address_id_main,
     );
 
-    console.log(
-      'console 13',
-      fee,
-      card_hash,
-      userExists,
-      newPhone,
-      address,
-      serializadCourses,
-      user_id,
-      installments,
-      total + fee,
-    );
-
+    
     const {
       transaction_id,
       status,

@@ -86,7 +86,8 @@ class CreatePagarmeCardService {
     );
 
     console.log(
-      '==>> 3 documents',
+      '==>> 3 documents zipcode',
+      `${address?.zip_code}`.replace(/([^0-9])/g, ''),
       userExists.person.cpf,
       userExists.person.rg,
 
@@ -94,59 +95,53 @@ class CreatePagarmeCardService {
       format(userExists.person.birdth_date, 'yyyy-MM-dd'),
     );
 
+    const customer = {
+      external_id: userExists.id,
+      name: userExists.person.name,
+      email: userExists.person.email,
+      type: 'individual',
+      country: 'br',
+      documents: [
+        {
+          type: 'cpf',
+          number: userExists.person.cpf,
+        },
+        {
+          type: 'rg',
+          number: userExists.person.rg,
+        },
+      ],
+      phone_numbers: [`+55${newPhone}`],
+      birthday: format(userExists.person.birdth_date, 'yyyy-MM-dd'),
+    };
+
+    const meAddress = {
+      country: 'br',
+      state: String(address?.city.state.name),
+      city: String(address?.city.name),
+      neighborhood: address?.neighborhood,
+      street: String(address?.street),
+      complementary: String(address?.complement),
+      street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
+      zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
+    };
+
     try {
       pagarmeTransaction = await client.transactions.create({
         api_key: process.env.PAGARME_API_KEY,
         capture: false,
         amount: parseInt(String(total * 100), 10),
         card_hash,
-        customer: {
-          external_id: userExists.id,
-          name: userExists.person.name,
-          email: userExists.person.email,
-          type: 'individual',
-          country: 'br',
-          documents: [
-            {
-              type: 'cpf',
-              number: userExists.person.cpf,
-            },
-            {
-              type: 'rg',
-              number: userExists.person.rg,
-            },
-          ],
-          phone_numbers: [`+55${newPhone}`],
-          birthday: format(userExists.person.birdth_date, 'yyyy-MM-dd'),
-        },
-
+        customer,
         billing: {
           name: userExists.person.name,
-          address: {
-            country: 'br',
-            state: String(address?.city.state.name),
-            city: String(address?.city.name),
-            neighborhood: address?.neighborhood,
-            street: String(address?.street),
-            complementary: String(address?.complement),
-            street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
-            zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
-          },
+          address: meAddress,
         },
         shipping: {
           name: userExists.person.name,
           fee,
           expedited: true,
-          address: {
-            country: 'br',
-            state: String(address?.city.state.name),
-            city: String(address?.city.name),
-            neighborhood: address?.neighborhood,
-            street: String(address?.street),
-            complementary: String(address?.complement),
-            street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
-            zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
-          },
+          address: meAddress,
         },
         items: serializadCourses.map((item_course: any) => ({
           id: String(item_course.course_id),

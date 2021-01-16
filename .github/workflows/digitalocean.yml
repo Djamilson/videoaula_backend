@@ -55,4 +55,4 @@ jobs:
           cd ~/app/videoaula_backend
           yarn        
           ./node_modules/.bin/typeorm migration:run
-          pm2 restart courses-server
+          pm2 restart concurso-api

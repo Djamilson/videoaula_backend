@@ -56,7 +56,9 @@ class CreatePagarmeCardService {
     serializadCourses,
     total,
   }: IRequest): Promise<IPagarme> {
-    console.log('process.env.PAGARME_API_KEY:', process.env.PAGARME_API_KEY);
+    console.log('process.env.PAGARME_API_KEY: ', process.env.PAGARME_API_KEY);
+    console.log('process.env.APP_SECRET', process.env.APP_SECRET);
+    console.log('process.env', process.env);
 
     const client = await pagarme.client.connect({
       api_key: process.env.PAGARME_API_KEY,

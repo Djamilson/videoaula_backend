@@ -62,38 +62,9 @@ class CreatePagarmeCardService {
       client = await pagarme.client.connect({
         api_key: process.env.PAGARME_API_KEY,
       });
-    } catch (e) {
-      console.log('Erro client:', e.response);
-    }
+    } catch (e) {}
 
     let pagarmeTransaction = null;
-    console.log('process.env.PAGARME_API_KEY', process.env.PAGARME_API_KEY);
-    console.log('serializadCourses:', serializadCourses);
-
-    console.log(
-      'data:::',
-      process.env.PAGARME_API_KEY,
-      parseInt(String(total * 100), 10),
-      card_hash,
-    );
-
-    console.log(
-      '====> 2 customer',
-
-      userExists.id,
-      userExists.person.name,
-      userExists.person.email,
-    );
-
-    console.log(
-      '==>> 3 documents zipcode',
-      `${address?.zip_code}`.replace(/([^0-9])/g, ''),
-      userExists.person.cpf,
-      userExists.person.rg,
-
-      [`+55${newPhone}`],
-      format(userExists.person.birdth_date, 'yyyy-MM-dd'),
-    );
 
     const customer = {
       external_id: userExists.id,
@@ -152,12 +123,8 @@ class CreatePagarmeCardService {
         })),
       });
     } catch (error) {
-      console.log('Meus erros: ', error.response.errors);
-      console.log('A client pool error occurred:', error);
       return error;
     }
-
-    console.log('Finalizou a transaction', pagarmeTransaction);
 
     const {
       id: transaction_id,

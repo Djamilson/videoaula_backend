@@ -12,6 +12,8 @@ export default class InfoClientsController {
       const user_id = req.user.id;
       const { documents, address, phone } = req.body;
 
+      console.log('req.body:::', req.body);
+
       const createAddress = container.resolve(CreateAddressService);
       const updatePerson = container.resolve(UpdatePersonService);
       const createPhone = container.resolve(CreatePhoneService);

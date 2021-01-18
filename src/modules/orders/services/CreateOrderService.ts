@@ -152,6 +152,7 @@ class CreateOrderService {
       userExists.person.address_id_main,
     );
 
+    console.log('console 13');
     const {
       transaction_id,
       status,

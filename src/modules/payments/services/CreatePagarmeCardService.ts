@@ -62,7 +62,9 @@ class CreatePagarmeCardService {
       client = await pagarme.client.connect({
         api_key: process.env.PAGARME_API_KEY,
       });
-    } catch (e) {}
+    } catch (e) {
+      console.log('Err 01', e);
+    }
 
     let pagarmeTransaction = null;
 
@@ -122,8 +124,9 @@ class CreatePagarmeCardService {
           tangible: true,
         })),
       });
-    } catch (error) {
-      return error;
+    } catch (err) {
+      console.log('Err', err);
+      return err;
     }
 
     const {

@@ -4,6 +4,8 @@ import { injectable } from 'tsyringe';
 
 import Address from '@modules/users/infra/typeorm/entities/Address';
 
+import AppError from '@shared/errors/AppError';
+
 interface ICourse {
   name: string;
   subtotal: number;
@@ -64,6 +66,8 @@ class CreatePagarmeCardService {
       });
     } catch (e) {
       console.log('Err 01', e);
+
+      throw new AppError('Erro pagarme 01');
     }
 
     let pagarmeTransaction = null;
@@ -125,8 +129,9 @@ class CreatePagarmeCardService {
         })),
       });
     } catch (err) {
-      console.log('Err', err);
-      return err;
+      console.log('Err', err.errors);
+
+      throw new AppError('Erro pagarme');
     }
 
     const {

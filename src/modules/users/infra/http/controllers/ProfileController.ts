@@ -21,16 +21,14 @@ export default class ProfileController {
   public async update(req: Request, res: Response): Promise<Response> {
     try {
       const user_id = req.user.id;
-      const { name, email, old_password, password } = req.body;
-
+      const { name, email } = req.body;
+      console.log('mmmf:', req.body);
       const updateProfile = container.resolve(UpdateProfileService);
 
       const user = await updateProfile.execute({
         user_id,
         name,
         email,
-        old_password,
-        password,
       });
 
       return res.json(classToClass(user));

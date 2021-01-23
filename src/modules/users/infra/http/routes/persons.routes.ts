@@ -2,27 +2,27 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import { Router } from 'express';
 
 import DocumentsController from '../controllers/DocumentsController';
-import InfoClientsController from '../controllers/InfoClientsController';
+import PersonsController from '../controllers/PersonsController';
 import ensureAuthenticated from '../middleware/ensureAuthenticanted';
 
-const infoClientsRouter = Router();
-const infoClientsController = new InfoClientsController();
+const personsRouter = Router();
+const personsController = new PersonsController();
 const documentsController = new DocumentsController();
 
-infoClientsRouter.use(ensureAuthenticated);
+personsRouter.use(ensureAuthenticated);
 
-infoClientsRouter.post('/', infoClientsController.create);
-infoClientsRouter.put(
+personsRouter.get('/:personId', personsController.show);
+personsRouter.put(
   '/documents',
   celebrate({
     [Segments.BODY]: {
-      birdthDate: Joi.string().required(),
       cpf: Joi.string().required(),
-      rg: Joi.string(),
-      rgss: Joi.string(),
+      rg: Joi.string().required(),
+      rgss: Joi.string().required(),
+      birdthDate: Joi.string().required(),
     },
   }),
   documentsController.update,
 );
 
-export default infoClientsRouter;
+export default personsRouter;

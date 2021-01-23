@@ -4,11 +4,13 @@ import { container } from 'tsyringe';
 
 import UpdateDocumentService from '@modules/users/services/UpdateDocumentService';
 
-export default class InfoPersonController {
+export default class DocumentsController {
   public async update(req: Request, res: Response): Promise<Response> {
     try {
       const user_id = req.user.id;
       const { cpf, birdthDate, rg, rgss } = req.body;
+
+      console.log('req.body:', req.body);
 
       const updatePerson = container.resolve(UpdateDocumentService);
 

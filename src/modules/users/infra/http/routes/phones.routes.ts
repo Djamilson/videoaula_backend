@@ -20,4 +20,5 @@ phonesRouter.post(
   phonesController.create,
 );
 
+phonesRouter.get('/persons/:idPerson', phonesController.index);
 export default phonesRouter;

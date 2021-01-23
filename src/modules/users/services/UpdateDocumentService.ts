@@ -32,6 +32,7 @@ class UpdateDocumentService {
     rg,
     rgss,
   }: IRequest): Promise<Person> {
+    console.log('cpf =>>:', cpf, birdthDate, rg, rgss);
     const newBirdthDate = parse(birdthDate, 'dd/MM/yyyy', new Date());
 
     const user = await this.usersRepository.findById(user_id);

@@ -22,7 +22,7 @@ export default class ProfileController {
     try {
       const user_id = req.user.id;
       const { name, email } = req.body;
-      console.log('mmmf:', req.body);
+
       const updateProfile = container.resolve(UpdateProfileService);
 
       const user = await updateProfile.execute({

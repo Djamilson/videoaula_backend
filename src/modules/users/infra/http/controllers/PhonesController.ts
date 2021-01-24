@@ -3,15 +3,15 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreatePhoneService from '@modules/users/services/CreatePhoneService';
+import ListPhonesService from '@modules/users/services/ListPhonesService';
 
 export default class PhonesController {
   public async index(req: Request, res: Response): Promise<Response> {
     try {
-      const phones = container.resolve(CreatePhoneService);
+      const user_id = req.user.id;
+      const phones = container.resolve(ListPhonesService);
 
-      const phone = await createPhone.execute({
-        prefix,
-        number,
+      const phone = await phones.execute({
         user_id,
       });
       return res.json(classToClass(phone));
@@ -25,6 +25,7 @@ export default class PhonesController {
       const user_id = req.user.id;
 
       const { prefix, number } = req.body;
+      console.log('req.body:: ', req.body);
 
       const createPhone = container.resolve(CreatePhoneService);
 

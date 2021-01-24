@@ -27,7 +27,7 @@ class CreatePhoneService {
     const checkUserExists = await this.usersRepository.findById(user_id);
 
     if (!checkUserExists) {
-      throw new AppError('Email address already used.');
+      throw new AppError('User not exists.');
     }
     const { person_id } = checkUserExists;
 

@@ -12,10 +12,11 @@ class PhonesRepository implements IPhonesRepository {
     this.ormPhoneRepository = getRepository(Phone);
   }
 
-  public async findAllPhonesToPerson(id: string): Promise<Phone[] | undefined> {
+  public async findAllPhonesToPersonId(
+    id: string,
+  ): Promise<Phone[] | undefined> {
     const phone = this.ormPhoneRepository.find({
       where: { person_id: id },
-      relations: ['phone'],
     });
 
     return phone;

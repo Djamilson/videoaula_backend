@@ -10,7 +10,7 @@ const phonesController = new PhonesController();
 phonesRouter.use(ensureAuthenticated);
 
 phonesRouter.post(
-  '/',
+  '/users',
   celebrate({
     [Segments.BODY]: {
       prefix: Joi.string().required(),
@@ -20,5 +20,5 @@ phonesRouter.post(
   phonesController.create,
 );
 
-phonesRouter.get('/persons/:idPerson', phonesController.index);
+phonesRouter.get('/users', phonesController.index);
 export default phonesRouter;

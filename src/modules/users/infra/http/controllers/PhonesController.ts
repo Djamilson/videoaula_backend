@@ -24,13 +24,11 @@ export default class PhonesController {
     try {
       const user_id = req.user.id;
 
-      const { prefix, number } = req.body;
-      console.log('req.body:: ', req.body);
+      const { number } = req.body;
 
       const createPhone = container.resolve(CreatePhoneService);
 
       const phone = await createPhone.execute({
-        prefix,
         number,
         user_id,
       });

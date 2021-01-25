@@ -141,13 +141,8 @@ class CreateOrderService {
       userExists.person.phone_id_man,
     );
 
-    console.log('console 11');
-    const newPhone = `${phone?.prefix}${phone?.number}`.replace(
-      /([^0-9])/g,
-      '',
-    );
+    const newPhone = `+${phone?.number}`.replace(/([^0-9])/g, '');
 
-    console.log('console 12');
     const address = await this.addressesRepository.findById(
       userExists.person.address_id_main,
     );

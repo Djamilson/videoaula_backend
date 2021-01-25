@@ -4,12 +4,12 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import Phone from '../infra/typeorm/entities/Phone';
+import IPersonsRepository from '../repositories/IPersonsRepository';
 import IPhonesRepository from '../repositories/IPhonesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
   number: string;
-  prefix: string;
   user_id: string;
 }
 
@@ -21,9 +21,12 @@ class CreatePhoneService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('PersonsRepository')
+    private personsRepository: IPersonsRepository,
   ) {}
 
-  public async execute({ number, prefix, user_id }: IRequest): Promise<Phone> {
+  public async execute({ number, user_id }: IRequest): Promise<Phone> {
     const checkUserExists = await this.usersRepository.findById(user_id);
 
     if (!checkUserExists) {
@@ -33,7 +36,6 @@ class CreatePhoneService {
 
     const checkPhoneExists = await this.phonesRepository.findByPhone({
       number,
-      prefix,
       person_id,
     });
 
@@ -41,13 +43,18 @@ class CreatePhoneService {
       throw new AppError('Phone already used.');
     }
 
+    const { person } = checkUserExists;
+
     const phoneSerealizable = {
       number,
-      prefix,
       person_id,
     };
 
-    const phone = this.phonesRepository.create(phoneSerealizable);
+    const phone = await this.phonesRepository.create(phoneSerealizable);
+
+    person.phone_id_man = phone.id;
+
+    await this.personsRepository.save(person);
 
     return phone;
   }

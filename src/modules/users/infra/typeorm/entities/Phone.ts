@@ -17,9 +17,6 @@ class Phone {
   id: string;
 
   @Column()
-  prefix: string;
-
-  @Column()
   number: string;
 
   @OneToOne(() => Person)

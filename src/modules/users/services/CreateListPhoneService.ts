@@ -9,7 +9,6 @@ import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IPhone {
   number: string;
-  prefix: string;
 }
 
 interface IRequest {
@@ -34,16 +33,6 @@ class CreatePhoneService {
       throw new AppError('User not exists.');
     }
     const { person_id } = checkUserExists;
-    /*
-    const checkPhoneExists = await this.phonesRepository.findByPhone({
-      number,
-      prefix,
-      person_id,
-    });
-
-    if (checkPhoneExists) {
-      throw new AppError('Phone already used.');
-    } */
 
     const phoneSerealizable = phones.map((phone: IPhone) => {
       return {

@@ -13,7 +13,6 @@ phonesRouter.post(
   '/users',
   celebrate({
     [Segments.BODY]: {
-      prefix: Joi.string().required(),
       number: Joi.string().required(),
     },
   }),

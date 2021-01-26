@@ -51,6 +51,10 @@ class PhonesRepository implements IPhonesRepository {
   public async createListPhone(phones: ICreatePhoneDTO[]): Promise<Phone[]> {
     return this.ormPhoneRepository.save(phones);
   }
+
+  public async delete(id: string): Promise<void> {
+    await this.ormPhoneRepository.delete(id);
+  }
 }
 
 export default PhonesRepository;

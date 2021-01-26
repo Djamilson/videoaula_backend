@@ -1,23 +1,23 @@
-import { parse } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import Person from '../infra/typeorm/entities/Person';
+import Phone from '../infra/typeorm/entities/Phone';
 import IPersonsRepository from '../repositories/IPersonsRepository';
+import IPhonesRepository from '../repositories/IPhonesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
+  phoneId: string;
   user_id: string;
-  cpf: string;
-  birdthDate: string;
-  rg: string;
-  rgss: string;
 }
 
 @injectable()
-class UpdateDocumentService {
+class UpdatePhoneMainService {
   constructor(
+    @inject('PhonesRepository')
+    private phonesRepository: IPhonesRepository,
+
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
@@ -26,13 +26,14 @@ class UpdateDocumentService {
   ) {}
 
   public async execute({
+    phoneId,
     user_id,
-    cpf,
-    birdthDate,
-    rg,
-    rgss,
-  }: IRequest): Promise<Person> {
-    const newBirdthDate = parse(birdthDate, 'dd/MM/yyyy', new Date());
+  }: IRequest): Promise<Phone | undefined> {
+    const checkPhoneExists = await this.phonesRepository.findById(phoneId);
+
+    if (!checkPhoneExists) {
+      throw new AppError('Phone not exist.');
+    }
 
     const user = await this.usersRepository.findById(user_id);
 
@@ -40,13 +41,13 @@ class UpdateDocumentService {
       throw new AppError('User not found');
     }
 
-    user.person.cpf = cpf;
-    user.person.rg = rg;
-    user.person.rgss = rgss;
-    user.person.birdth_date = newBirdthDate;
+    const { person } = user;
+    person.phone_id_man = phoneId;
 
-    return this.personsRepository.save(user.person);
+    await this.personsRepository.save(person);
+
+    return checkPhoneExists;
   }
 }
 
-export default UpdateDocumentService;
+export default UpdatePhoneMainService;

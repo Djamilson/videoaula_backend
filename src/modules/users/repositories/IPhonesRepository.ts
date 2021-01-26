@@ -9,4 +9,5 @@ export default interface IPhonesRepository {
   createListPhone(phones: ICreatePhoneDTO[]): Promise<Phone[]>;
   create(data: ICreatePhoneDTO): Promise<Phone>;
   save(phone: Phone): Promise<Phone>;
+  delete(id: string): Promise<void>;
 }

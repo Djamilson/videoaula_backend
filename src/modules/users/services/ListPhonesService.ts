@@ -9,7 +9,12 @@ import IUsersRepository from '../repositories/IUsersRepository';
 interface IRequest {
   user_id: string;
 }
-
+interface IPhone {
+  id: string;
+  number: string;
+  person_id: string;
+  main: boolean;
+}
 @injectable()
 class ListPhonesService {
   constructor(
@@ -20,7 +25,7 @@ class ListPhonesService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<Phone[] | undefined> {
+  public async execute({ user_id }: IRequest): Promise<IPhone[] | undefined> {
     const checkUserExists = await this.usersRepository.findById(user_id);
 
     if (!checkUserExists) {
@@ -32,7 +37,25 @@ class ListPhonesService {
       person_id,
     );
 
-    return phones;
+    const serializablePhone = phones?.map((phone: Phone) => {
+      const { id, number, person_id: personId } = phone;
+      if (phone.id === checkUserExists.person.phone_id_man) {
+        return {
+          id,
+          number,
+          person_id: personId,
+          main: true,
+        };
+      }
+      return {
+        id,
+        number,
+        person_id: personId,
+        main: false,
+      };
+    });
+
+    return serializablePhone;
   }
 }
 

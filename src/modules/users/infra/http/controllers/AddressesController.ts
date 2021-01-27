@@ -6,6 +6,16 @@ import CreateAddressService from '@modules/users/services/CreateAddressService';
 import ListAddressesService from '@modules/users/services/ListAddressesService';
 
 export default class AddressesController {
+  public async show(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+
+    const listAddresses = container.resolve(ListAddressesService);
+
+    const addresses = await listAddresses.execute(user_id);
+
+    return res.json(classToClass(addresses));
+  }
+
   public async index(req: Request, res: Response): Promise<Response> {
     const user_id = req.user.id;
 

@@ -20,6 +20,14 @@ class CitiesRepository implements ICitiesRepository {
 
     return listCities;
   }
+
+  public async findById(id: string): Promise<City | undefined> {
+    const city = await this.ormRepository.findOne(id, {
+      relations: ['state'],
+    });
+
+    return city;
+  }
 }
 
 export default CitiesRepository;

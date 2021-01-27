@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import Address from '../infra/typeorm/entities/Address';
 import IAddressesRepository from '../repositories/IAddressesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
@@ -24,7 +25,9 @@ export interface IAddress {
   zip_code: string;
   neighborhood: string;
   person_id: string;
-  city: ICity;
+  city: string;
+  state: string;
+  main: boolean;
 }
 
 @injectable()
@@ -48,7 +51,47 @@ class ListAddressesService {
       userExists.person_id,
     );
 
-    return listAddresses;
+    const serializableAddresses = listAddresses?.map((address: Address) => {
+      const {
+        id,
+        number,
+        street,
+        complement,
+        zip_code,
+        neighborhood,
+        person_id,
+        city,
+      } = address;
+
+      if (address.id === userExists.person.address_id_main) {
+        return {
+          id,
+          number,
+          street,
+          complement,
+          zip_code,
+          neighborhood,
+          person_id,
+          city: city.name,
+          state: city.state.acronym,
+          main: true,
+        };
+      }
+      return {
+        id,
+        number,
+        street,
+        complement,
+        zip_code,
+        neighborhood,
+        person_id,
+        city: city.name,
+        state: city.state.acronym,
+        main: false,
+      };
+    });
+
+    return serializableAddresses;
   }
 }
 

@@ -1,5 +1,7 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Raw, Repository } from 'typeorm';
 
+import ICityDTO from '@modules/users/dtos/ICityDTO';
+import ITotalCityDTO from '@modules/users/dtos/ITotalCityDTO';
 import ICitiesRepository from '@modules/users/repositories/ICitiesRepository';
 
 import City from '../entities/City';
@@ -12,10 +14,17 @@ class CitiesRepository implements ICitiesRepository {
   }
 
   public async findByCitiesToStateId(
-    state_id: string,
+    object: ICityDTO,
   ): Promise<City[] | undefined> {
+    const { state_id, page, pageSize, query } = object;
     const listCities = await this.ormRepository.find({
-      where: { state_id },
+      where: {
+        state_id,
+        name: Raw(alias => `${alias} ILIKE '${query}'`),
+      },
+      order: { name: 'DESC' },
+      take: (page - 1) * pageSize,
+      skip: page,
     });
 
     return listCities;
@@ -27,6 +36,22 @@ class CitiesRepository implements ICitiesRepository {
     });
 
     return city;
+  }
+
+  public async findAndCount(object: ICityDTO): Promise<ITotalCityDTO> {
+    const { state_id, page, pageSize, query } = object;
+
+    const [result, total] = await this.ormRepository.findAndCount({
+      where: {
+        state_id,
+        name: Raw(alias => `${alias} ILIKE '${query}'`),
+      },
+      order: { name: 'DESC' },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+    });
+
+    return { result, total };
   }
 }
 

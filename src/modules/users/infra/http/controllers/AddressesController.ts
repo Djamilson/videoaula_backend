@@ -3,15 +3,17 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateAddressService from '@modules/users/services/CreateAddressService';
+import DeleteAddressService from '@modules/users/services/DeleteAddressService';
+import FindAddressService from '@modules/users/services/FindAddressService';
 import ListAddressesService from '@modules/users/services/ListAddressesService';
 
 export default class AddressesController {
   public async show(req: Request, res: Response): Promise<Response> {
-    const user_id = req.user.id;
+    const { addressId } = req.params;
 
-    const listAddresses = container.resolve(ListAddressesService);
+    const findAddress = container.resolve(FindAddressService);
 
-    const addresses = await listAddresses.execute(user_id);
+    const addresses = await findAddress.execute({ id: addressId });
 
     return res.json(classToClass(addresses));
   }
@@ -55,5 +57,19 @@ export default class AddressesController {
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
+  }
+
+  public async destroy(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { addressId } = request.params;
+
+    const addressesService = container.resolve(DeleteAddressService);
+    await addressesService.execute({
+      idAddress: addressId,
+    });
+
+    return response.status(204).json({ success: true });
   }
 }

@@ -7,10 +7,19 @@ import ListCitiesService from '@modules/users/services/ListCitiesService';
 export default class CitiesController {
   public async index(req: Request, res: Response): Promise<Response> {
     const { state_id } = req.params;
+    const { page, limit, q } = req.query;
+    const pageSize = limit;
+
+    const query = `%${q || ''}%`; // string de consulta
 
     const listCities = container.resolve(ListCitiesService);
 
-    const cities = await listCities.execute(state_id);
+    const cities = await listCities.execute({
+      state_id,
+      page: Number(page),
+      pageSize: Number(pageSize),
+      query,
+    });
 
     return res.json(classToClass(cities));
   }

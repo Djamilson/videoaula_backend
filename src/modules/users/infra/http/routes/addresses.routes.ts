@@ -2,10 +2,12 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import { Router } from 'express';
 
 import AddressesController from '../controllers/AddressesController';
+import AddressMainController from '../controllers/AddressMainController';
 import ensureAuthenticated from '../middleware/ensureAuthenticanted';
 
 const addressesRouter = Router();
 const addressesController = new AddressesController();
+const addressMainController = new AddressMainController();
 
 addressesRouter.use(ensureAuthenticated);
 
@@ -24,6 +26,9 @@ addressesRouter.post(
   addressesController.create,
 );
 
+addressesRouter.delete('/:phoneId', addressesController.destroy);
 addressesRouter.get('/users', addressesController.index);
+addressesRouter.get('/users/:addressId', addressesController.show);
+addressesRouter.put('/main/:addressId', addressMainController.put);
 
 export default addressesRouter;

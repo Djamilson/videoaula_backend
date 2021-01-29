@@ -46,7 +46,7 @@ class CitiesRepository implements ICitiesRepository {
         state_id,
         name: Raw(alias => `${alias} ILIKE '${query}'`),
       },
-      order: { name: 'DESC' },
+      order: { name: 'ASC' },
       take: pageSize,
       skip: (page - 1) * pageSize,
     });

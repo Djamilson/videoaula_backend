@@ -39,11 +39,6 @@ class ListCitiesService {
     pageSize,
     query,
   }: IRequest): Promise<ICityReturn | undefined> {
-    /*
-    const { result, total } = await this.citiesRepository.findByCitiesToStateId(
-      state_id,
-    ); */
-
     const { result, total } = await this.citiesRepository.findAndCount({
       state_id,
       page,
@@ -53,15 +48,6 @@ class ListCitiesService {
     const pages = Math.ceil(total / pageSize);
 
     const cityInfo = { page, pages, total, limit: pageSize };
-    /*
-    const listCities = await this.citiesRepository.findByCitiesToStateId({
-      state_id,
-      page,
-      pageSize,
-      query,
-    }); */
-
-    console.log('My resulta:', total);
 
     const options = result?.map((city: City) => ({
       value: city.id,

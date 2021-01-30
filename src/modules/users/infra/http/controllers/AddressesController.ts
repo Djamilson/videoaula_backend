@@ -6,6 +6,7 @@ import CreateAddressService from '@modules/users/services/CreateAddressService';
 import DeleteAddressService from '@modules/users/services/DeleteAddressService';
 import FindAddressService from '@modules/users/services/FindAddressService';
 import ListAddressesService from '@modules/users/services/ListAddressesService';
+import UpdateAddressService from '@modules/users/services/UpdateAddressService';
 
 export default class AddressesController {
   public async show(req: Request, res: Response): Promise<Response> {
@@ -51,6 +52,35 @@ export default class AddressesController {
         zip_code,
         neighborhood,
         user_id,
+        city_id,
+      });
+      return res.json(classToClass(address));
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    try {
+      const {
+        id,
+        number,
+        street,
+        complement,
+        zip_code,
+        neighborhood,
+        city_id,
+      } = req.body;
+
+      const updateAddressService = container.resolve(UpdateAddressService);
+
+      const address = await updateAddressService.execute({
+        id,
+        number,
+        street,
+        complement,
+        zip_code,
+        neighborhood,
         city_id,
       });
       return res.json(classToClass(address));

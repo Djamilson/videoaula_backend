@@ -51,7 +51,10 @@ class ListAddressesService {
       userExists.person_id,
     );
 
+    console.log('listAddresses:::', listAddresses);
+
     const serializableAddresses = listAddresses?.map((address: Address) => {
+      console.log('My address:', address);
       const {
         id,
         number,

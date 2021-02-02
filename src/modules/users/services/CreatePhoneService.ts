@@ -8,12 +8,12 @@ import IPhonesRepository from '../repositories/IPhonesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
-  number: string;
+  phone: string;
   user_id: string;
 }
 interface IPhone {
   id: string;
-  number: string;
+  phone: string;
   person_id: string;
   main: boolean;
 }
@@ -30,7 +30,7 @@ class CreatePhoneService {
     private personsRepository: IPersonsRepository,
   ) {}
 
-  public async execute({ number, user_id }: IRequest): Promise<IPhone> {
+  public async execute({ phone, user_id }: IRequest): Promise<IPhone> {
     const checkUserExists = await this.usersRepository.findById(user_id);
 
     if (!checkUserExists) {
@@ -39,7 +39,7 @@ class CreatePhoneService {
     const { person_id } = checkUserExists;
 
     const checkPhoneExists = await this.phonesRepository.findByPhone({
-      number,
+      phone,
       person_id,
     });
 
@@ -50,20 +50,20 @@ class CreatePhoneService {
     const { person } = checkUserExists;
 
     const phoneSerealizable = {
-      number,
+      phone,
       person_id,
     };
 
-    const phone = await this.phonesRepository.create(phoneSerealizable);
+    const newPhone = await this.phonesRepository.create(phoneSerealizable);
 
     const serealizablePhone = {
-      id: phone.id,
-      number: phone.number,
-      person_id: phone.person_id,
+      id: newPhone.id,
+      phone: newPhone.phone,
+      person_id: newPhone.person_id,
       main: true,
     };
 
-    person.phone_id_man = phone.id;
+    person.phone_id_man = newPhone.id;
 
     await this.personsRepository.save(person);
 

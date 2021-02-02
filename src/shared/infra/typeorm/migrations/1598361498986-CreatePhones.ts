@@ -14,7 +14,7 @@ export default class CreatePhones1598361498986 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'number',
+            name: 'phone',
             type: 'varchar',
           },
 

@@ -17,7 +17,7 @@ class Phone {
   id: string;
 
   @Column()
-  number: string;
+  phone: string;
 
   @OneToOne(() => Person)
   @JoinColumn({ name: 'person_id' })

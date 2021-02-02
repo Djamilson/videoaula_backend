@@ -15,7 +15,7 @@ phonesRouter.post(
   '/users',
   celebrate({
     [Segments.BODY]: {
-      number: Joi.string().required(),
+      phone: Joi.string().required(),
     },
   }),
   phonesController.create,
@@ -30,7 +30,7 @@ phonesRouter.put(
     [Segments.BODY]: {
       id: Joi.string().required(),
       person_id: Joi.string().required(),
-      number: Joi.string().required(),
+      phone: Joi.string().required(),
     },
   }),
   phonesController.update,

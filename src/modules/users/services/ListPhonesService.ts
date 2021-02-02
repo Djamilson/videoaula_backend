@@ -11,7 +11,7 @@ interface IRequest {
 }
 interface IPhone {
   id: string;
-  number: string;
+  phone: string;
   person_id: string;
   main: boolean;
 }
@@ -37,19 +37,19 @@ class ListPhonesService {
       person_id,
     );
 
-    const serializablePhone = phones?.map((phone: Phone) => {
-      const { id, number, person_id: personId } = phone;
-      if (phone.id === checkUserExists.person.phone_id_man) {
+    const serializablePhone = phones?.map((myPhone: Phone) => {
+      const { id, phone, person_id: personId } = myPhone;
+      if (myPhone.id === checkUserExists.person.phone_id_man) {
         return {
           id,
-          number,
+          phone,
           person_id: personId,
           main: true,
         };
       }
       return {
         id,
-        number,
+        phone,
         person_id: personId,
         main: false,
       };

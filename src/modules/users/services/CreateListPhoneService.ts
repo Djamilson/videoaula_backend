@@ -8,7 +8,7 @@ import IPhonesRepository from '../repositories/IPhonesRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IPhone {
-  number: string;
+  phone: string;
 }
 
 interface IRequest {

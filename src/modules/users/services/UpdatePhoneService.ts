@@ -8,7 +8,7 @@ import IPhonesRepository from '../repositories/IPhonesRepository';
 interface IRequest {
   person_id: string;
   id: string;
-  number: string;
+  phone: string;
 }
 
 @injectable()
@@ -18,9 +18,9 @@ class UpdatePhoneService {
     private phonesRepository: IPhonesRepository,
   ) {}
 
-  public async execute({ id, number, person_id }: IRequest): Promise<Phone> {
+  public async execute({ id, phone, person_id }: IRequest): Promise<Phone> {
     const checkPhoneExists = await this.phonesRepository.findByPhone({
-      number,
+      phone,
       person_id,
     });
 
@@ -28,15 +28,15 @@ class UpdatePhoneService {
       throw new AppError('Phone already used.');
     }
 
-    const phone = await this.phonesRepository.findById(id);
+    const myPhone = await this.phonesRepository.findById(id);
 
-    if (!phone) {
+    if (!myPhone) {
       throw new AppError('Phone not found');
     }
 
-    phone.number = number;
+    myPhone.phone = phone;
 
-    return this.phonesRepository.save(phone);
+    return this.phonesRepository.save(myPhone);
   }
 }
 

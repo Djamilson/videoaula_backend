@@ -39,17 +39,18 @@ export default class PhonesController {
 
   public async create(req: Request, res: Response): Promise<Response> {
     try {
+      console.log('My phone:::', req.body);
       const user_id = req.user.id;
 
-      const { number } = req.body;
+      const { phone } = req.body;
 
       const createPhone = container.resolve(CreatePhoneService);
 
-      const phone = await createPhone.execute({
-        number,
+      const newPhone = await createPhone.execute({
+        phone,
         user_id,
       });
-      return res.json(classToClass(phone));
+      return res.json(classToClass(newPhone));
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -57,15 +58,15 @@ export default class PhonesController {
 
   public async update(req: Request, res: Response): Promise<Response> {
     try {
-      const { id, number, person_id } = req.body;
+      const { id, phone, person_id } = req.body;
       const upDatePhone = container.resolve(UpdatePhoneService);
 
-      const phone = await upDatePhone.execute({
+      const newPhone = await upDatePhone.execute({
         id,
-        number,
+        phone,
         person_id,
       });
-      return res.json(classToClass(phone));
+      return res.json(classToClass(newPhone));
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }

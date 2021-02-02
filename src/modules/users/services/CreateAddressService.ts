@@ -3,6 +3,7 @@ import { injectable, inject } from 'tsyringe';
 // import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '@shared/errors/AppError';
 
+import Address from '../infra/typeorm/entities/Address';
 import IAddressesRepository from '../repositories/IAddressesRepository';
 import IPersonsRepository from '../repositories/IPersonsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -38,7 +39,7 @@ class CreateAddressService {
     neighborhood,
     user_id,
     city_id,
-  }: IRequest): Promise<void> {
+  }: IRequest): Promise<Address> {
     const checkUserExists = await this.usersRepository.findById(user_id);
     if (!checkUserExists) {
       throw new AppError('User not exist.');
@@ -76,6 +77,8 @@ class CreateAddressService {
     person.address_id_main = address.id;
 
     await this.personsRepository.save(person);
+
+    return address;
   }
 }
 

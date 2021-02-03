@@ -65,7 +65,7 @@ class CreatePagarmeCardService {
         api_key: process.env.PAGARME_API_KEY,
       });
     } catch (e) {
-      console.log('Err 01', e);
+      console.log('Err 01', e.errors);
 
       throw new AppError('Erro pagarme 01');
     }
@@ -99,7 +99,7 @@ class CreatePagarmeCardService {
       neighborhood: address?.neighborhood,
       street: String(address?.street),
       complementary: String(address?.complement),
-      street_number: `${address?.number}`.replace(/([^0-9])/g, ''),
+      street_number: String(address?.number),
       zipcode: `${address?.zip_code}`.replace(/([^0-9])/g, ''),
     };
 
@@ -129,7 +129,8 @@ class CreatePagarmeCardService {
         })),
       });
     } catch (err) {
-      console.log('Err', err.errors);
+      console.log('Err', err);
+      console.log('Err', err.response.errors);
 
       throw new AppError('Erro pagarme');
     }

@@ -10,8 +10,8 @@ export default class OrdersCoursesController {
 
     const findOrders = container.resolve(GetOrderCourseUserIdService);
 
-    const courses = await findOrders.execute({ user_id });
+    const orders = await findOrders.execute({ user_id });
 
-    return response.json(classToClass(courses));
+    return response.json(classToClass(orders));
   }
 }

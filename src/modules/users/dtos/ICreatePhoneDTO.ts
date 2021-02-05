@@ -1,5 +1,4 @@
 export default interface ICreatePhoneDTO {
-  number: string;
-  prefix: string;
+  phone: string;
   person_id: string;
 }

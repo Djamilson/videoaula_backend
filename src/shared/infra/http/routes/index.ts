@@ -15,6 +15,7 @@ import citiesRouter from '@modules/users/infra/http/routes/cities.routes';
 import groupsRouter from '@modules/users/infra/http/routes/groups.routes';
 import infoClientsRouter from '@modules/users/infra/http/routes/infoclients.routes';
 import passwordRouter from '@modules/users/infra/http/routes/password.routes';
+import personsRouter from '@modules/users/infra/http/routes/persons.routes';
 import phonesRouter from '@modules/users/infra/http/routes/phones.routes';
 import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
@@ -27,9 +28,10 @@ routes.use('/users', usersRouter);
 routes.use('/sessions', sessionsRouter);
 routes.use('/groups', groupsRouter);
 
-routes.use('/infoclients', infoClientsRouter);
+routes.use('/info/clients', infoClientsRouter);
 routes.use('/addresses', addressesRouter);
 routes.use('/phones', phonesRouter);
+routes.use('/persons', personsRouter);
 
 routes.use('/password', passwordRouter);
 routes.use('/profile', profileRouter);

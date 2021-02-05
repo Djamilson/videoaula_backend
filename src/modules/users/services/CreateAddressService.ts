@@ -5,6 +5,7 @@ import AppError from '@shared/errors/AppError';
 
 import Address from '../infra/typeorm/entities/Address';
 import IAddressesRepository from '../repositories/IAddressesRepository';
+import IPersonsRepository from '../repositories/IPersonsRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
@@ -25,6 +26,9 @@ class CreateAddressService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('PersonsRepository')
+    private personsRepository: IPersonsRepository,
   ) {}
 
   public async execute({
@@ -40,6 +44,7 @@ class CreateAddressService {
     if (!checkUserExists) {
       throw new AppError('User not exist.');
     }
+
     const { person_id } = checkUserExists;
 
     const checkAddressExists = await this.addressesRepository.findByAddress({
@@ -66,7 +71,12 @@ class CreateAddressService {
       city_id,
     };
 
-    const address = this.addressesRepository.create(addressSerealizable);
+    const { person } = checkUserExists;
+    const address = await this.addressesRepository.create(addressSerealizable);
+
+    person.address_id_main = address.id;
+
+    await this.personsRepository.save(person);
 
     return address;
   }

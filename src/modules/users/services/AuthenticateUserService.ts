@@ -52,7 +52,6 @@ class AuthenticateUserService {
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    console.log('email, password::', email, password);
     const userOut = await this.usersRepository.findByEmail(email);
 
     if (!userOut) {
@@ -92,6 +91,7 @@ class AuthenticateUserService {
         status: userOut.person.status,
         privacy: userOut.person.privacy,
         avatar: userOut.person.avatar,
+        phone_id_man: userOut.person.phone_id_man,
         address_id_main: userOut.person.address_id_main,
         avatar_url: userOut.person.getAvatarUrl,
       },

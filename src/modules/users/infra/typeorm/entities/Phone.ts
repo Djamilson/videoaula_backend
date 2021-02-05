@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -16,10 +17,7 @@ class Phone {
   id: string;
 
   @Column()
-  prefix: string;
-
-  @Column()
-  number: string;
+  phone: string;
 
   @OneToOne(() => Person)
   @JoinColumn({ name: 'person_id' })
@@ -29,9 +27,11 @@ class Phone {
   person_id: string;
 
   @CreateDateColumn()
+  @Exclude()
   created_at: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at: Date;
 }
 

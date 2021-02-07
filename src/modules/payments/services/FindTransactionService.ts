@@ -21,7 +21,6 @@ class FindTransactionService {
       order_id,
     );
 
-  
     return transaction;
   }
 }

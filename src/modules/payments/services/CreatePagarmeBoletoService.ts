@@ -19,7 +19,6 @@ interface IRequest {
   card_hash: string;
   installments: string;
   total: number;
-  order_id: string;
 
   userExists: {
     id: string;
@@ -47,11 +46,10 @@ interface IPagarme {
 }
 
 @injectable()
-class CreatePagarmeCardService {
+class CreatePagarmeBoletoService {
   constructor() {}
 
   public async execute({
-    order_id,
     fee,
     card_hash,
     userExists,
@@ -112,12 +110,8 @@ class CreatePagarmeCardService {
         amount: parseInt(String(total * 100), 10),
         card_hash,
         // Passando a URL que vai receber o resultado
-        postback_url:
-          'http://860dbc2385e9.ngrok.io/transactions/card/postbacks',
-        metadata: {
-          idOrder: order_id,
-        },
-        antifraud_metadata: {},
+        postback_url: 'http://21218c488871.ngrok.io/postback_url',
+
         capture: true,
         // Vamos executar a chamada assíncrona
         async: true,
@@ -168,4 +162,4 @@ class CreatePagarmeCardService {
   }
 }
 
-export default CreatePagarmeCardService;
+export default CreatePagarmeBoletoService;

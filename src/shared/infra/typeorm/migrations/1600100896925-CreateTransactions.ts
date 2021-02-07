@@ -30,6 +30,7 @@ export default class CreateTransactions1600100896925
           {
             name: 'authorization_code',
             type: 'varchar',
+            isNullable: true,
           },
 
           {
@@ -40,6 +41,7 @@ export default class CreateTransactions1600100896925
           {
             name: 'tid',
             type: 'varchar',
+            isNullable: true,
           },
 
           {

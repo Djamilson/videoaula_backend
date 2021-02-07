@@ -88,7 +88,7 @@ class CreateOrderService {
     courses,
     card_hash,
     installments,
-  }: IRequest): Promise<IOrder> {
+  }: IRequest): Promise<IOrder | string> {
     const createPagarmeCard = container.resolve(CreatePagarmeCardService);
     console.log('console 0');
 
@@ -148,14 +148,26 @@ class CreateOrderService {
     );
 
     console.log('console 13');
-    const {
-      transaction_id,
+    /* const {
+      ,
       status,
       authorization_code,
       authorized_amount,
       brand,
       tid,
-    } = await createPagarmeCard.execute({
+    } */
+
+    const newOrder = await this.ordersRepository.create({
+      user: userExists,
+      courses: serializadCourses,
+      total: total + fee,
+      fee,
+    });
+
+    const { id: order_id, order_courses } = newOrder;
+
+    const pagarmeCreate = await createPagarmeCard.execute({
+      order_id,
       fee,
       card_hash,
       userExists,
@@ -167,6 +179,11 @@ class CreateOrderService {
       total: total + fee,
     });
 
+    const { transaction_id, status, brand, authorized_amount } = pagarmeCreate;
+
+    console.log('psppdpspdfopaso:>>', pagarmeCreate);
+
+    /*
     console.log(
       'Pasoou::::',
       transaction_id,
@@ -175,16 +192,8 @@ class CreateOrderService {
       authorized_amount,
       brand,
       tid,
-    );
+    ); */
 
-    const newOrder = await this.ordersRepository.create({
-      user: userExists,
-      courses: serializadCourses,
-      total: total + fee,
-      fee,
-    });
-
-    const { id: order_id, order_courses } = newOrder;
 
     const order_courseIds = order_courses.map((ord_course: IOrderCourse) => {
       return {
@@ -208,10 +217,8 @@ class CreateOrderService {
     await this.transactionsRepository.create({
       transaction_id,
       status,
-      authorization_code,
       authorized_amount,
       brand,
-      tid,
       installments,
       order_id,
     });

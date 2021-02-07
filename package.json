@@ -33,6 +33,7 @@
     "nodemailer": "^6.4.10",
     "pagarme": "^4.13.0",
     "pg": "^8.0.2",
+    "qs": "^6.9.6",
     "rate-limiter-flexible": "^2.1.10",
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",

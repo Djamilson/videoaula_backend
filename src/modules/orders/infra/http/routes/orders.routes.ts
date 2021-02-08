@@ -2,15 +2,18 @@ import { Router } from 'express';
 
 import ensureAuthenticated from '@modules/users/infra/http/middleware/ensureAuthenticanted';
 
-import OrdersController from '../controller/OrdersController';
+import OrdersBoletoController from '../controller/OrdersBoletoController';
+import OrdersCardController from '../controller/OrdersCardController';
 
 const ordersRouter = Router();
-const ordersController = new OrdersController();
+const ordersCardController = new OrdersCardController();
+const ordersBoletoController = new OrdersBoletoController();
 
 ordersRouter.use(ensureAuthenticated);
 
-ordersRouter.post('/payments/new', ordersController.create);
-ordersRouter.get('/', ordersController.index);
-ordersRouter.get('/:id', ordersController.show);
+ordersRouter.post('/payments/card/new', ordersCardController.create);
+ordersRouter.post('/payments/boleto/new', ordersBoletoController.create);
+ordersRouter.get('/', ordersCardController.index);
+ordersRouter.get('/:id', ordersCardController.show);
 
 export default ordersRouter;

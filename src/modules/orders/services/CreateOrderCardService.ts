@@ -61,7 +61,7 @@ interface IOrder {
 }
 
 @injectable()
-class CreateOrderService {
+class CreateOrderCardService {
   constructor(
     @inject('OrdersRepository')
     private ordersRepository: IOrdersRepository,
@@ -194,7 +194,6 @@ class CreateOrderService {
       tid,
     ); */
 
-
     const order_courseIds = order_courses.map((ord_course: IOrderCourse) => {
       return {
         id: ord_course.course_id,
@@ -249,4 +248,4 @@ class CreateOrderService {
   }
 }
 
-export default CreateOrderService;
+export default CreateOrderCardService;

@@ -107,12 +107,13 @@ class CreatePagarmeBoletoService {
         card_holder_name: userExists.person.name,
         amount: parseInt(String(total * 100), 10),
         // Passando a URL que vai receber o resultado
-        postback_url: 'http://21218c488871.ngrok.io/postback_url',
+        postback_url: 'http://7d3e69e650e5.ngrok.io/postback_url',
         metadata: {
           idOrder: order_id,
         },
         // Vamos executar a chamada assíncrona
         async: false,
+        capture: true,
         payment_method: 'boleto',
         boleto_instructions:
           'Use esse atributo para preencher o Campo instruções do boleto.',

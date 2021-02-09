@@ -1,4 +1,4 @@
-import ICreateTransactionDTO from '../dtos/ICreateTransactionDTO';
+import ICreateTransactionDTO from '../dtos/ICreateTransactionCardDTO';
 import Transaction from '../infra/typeorm/entities/Transaction';
 
 export default interface ITransactionsRepository {

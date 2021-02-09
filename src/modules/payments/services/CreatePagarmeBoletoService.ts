@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import JSONFormatter from 'json-formatter-js';
 import pagarme from 'pagarme';
 import { injectable } from 'tsyringe';
 
@@ -16,10 +17,9 @@ interface ICourse {
 interface IRequest {
   user_id: string;
   fee: number;
-  card_hash: string;
+  order_id: string;
   installments: string;
   total: number;
-  order_id: string;
 
   userExists: {
     id: string;
@@ -40,20 +40,16 @@ interface IRequest {
 interface IPagarme {
   transaction_id: string;
   status: string;
-  authorization_code: string;
-  brand: string;
-  authorized_amount: string;
-  tid: string;
+  json_result: JSONFormatter;
 }
 
 @injectable()
-class CreatePagarmeCardService {
+class CreatePagarmeBoletoService {
   constructor() {}
 
   public async execute({
-    order_id,
     fee,
-    card_hash,
+    order_id,
     userExists,
     newPhone,
     address,
@@ -108,38 +104,22 @@ class CreatePagarmeCardService {
     try {
       pagarmeTransaction = await client.transactions.create({
         api_key: process.env.PAGARME_API_KEY,
-
+        card_holder_name: userExists.person.name,
         amount: parseInt(String(total * 100), 10),
-        card_hash,
         // Passando a URL que vai receber o resultado
-        postback_url:
-          'http://860dbc2385e9.ngrok.io/transactions/card/postbacks',
+        postback_url: 'http://7d3e69e650e5.ngrok.io/postback_url',
         metadata: {
           idOrder: order_id,
         },
-        antifraud_metadata: {},
-        capture: true,
         // Vamos executar a chamada assíncrona
-        async: true,
+        async: false,
+        capture: true,
+        payment_method: 'boleto',
+        boleto_instructions:
+          'Use esse atributo para preencher o Campo instruções do boleto.',
 
         customer,
-        billing: {
-          name: userExists.person.name,
-          address: meAddress,
-        },
-        shipping: {
-          name: userExists.person.name,
-          fee,
-          expedited: true,
-          address: meAddress,
-        },
-        items: serializadCourses.map((item_course: any) => ({
-          id: String(item_course.course_id),
-          title: item_course.name,
-          unit_price: parseInt(String(item_course.price * 100), 10),
-          quantity: item_course.quantity,
-          tangible: true,
-        })),
+        installments: 1,
       });
     } catch (err) {
       console.log('Err', err);
@@ -147,25 +127,15 @@ class CreatePagarmeCardService {
 
       throw new AppError('Erro pagarme');
     }
-
-    const {
-      id: transaction_id,
-      status,
-      authorization_code,
-      card_brand: brand,
-      authorized_amount,
-      tid,
-    } = pagarmeTransaction;
+    console.log('Boleto retorno :', pagarmeTransaction);
+    const { id: transaction_id, status } = pagarmeTransaction;
 
     return {
       transaction_id: String(transaction_id),
       status,
-      authorization_code,
-      brand,
-      authorized_amount: String(authorized_amount),
-      tid,
+      json_result: pagarmeTransaction,
     };
   }
 }
 
-export default CreatePagarmeCardService;
+export default CreatePagarmeBoletoService;

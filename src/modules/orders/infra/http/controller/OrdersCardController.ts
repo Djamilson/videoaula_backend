@@ -2,11 +2,11 @@ import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import CreateOrderService from '@modules/orders/services/CreateOrderService';
+import CreateOrderCardService from '@modules/orders/services/CreateOrderCardService';
 import FinAllOrderToUserIdService from '@modules/orders/services/FindAllOrderToUserIdService';
 import FindOrderService from '@modules/orders/services/FindOrderService';
 
-export default class OrdersController {
+export default class OrdersCardController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
@@ -29,12 +29,12 @@ export default class OrdersController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    console.log('request.body::', request.body);
+    console.log('request.body::===>>', request.body);
     const { courses, fee, card_hash, installments } = request.body;
 
-    const createOrder = container.resolve(CreateOrderService);
+    const createOrderCard = container.resolve(CreateOrderCardService);
 
-    const customer = await createOrder.execute({
+    const customerCard = await createOrderCard.execute({
       user_id,
       fee,
       courses,
@@ -42,8 +42,6 @@ export default class OrdersController {
       installments,
     });
 
-    console.log('Finalizaou');
-
-    return response.json(customer);
+    return response.json(customerCard);
   }
 }

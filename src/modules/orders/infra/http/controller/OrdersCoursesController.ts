@@ -8,6 +8,7 @@ export default class OrdersCoursesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
+    console.log('Estaddoooi=========');
     const findOrders = container.resolve(GetOrderCourseUserIdService);
 
     const orders = await findOrders.execute({ user_id });

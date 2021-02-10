@@ -34,7 +34,6 @@ export default class CoursesController {
   public async create(req: Request, res: Response): Promise<Response> {
     try {
       const { name, price, stock } = req.body;
-      console.log('req.body', req.body);
 
       const { filename: image } = req.file;
 

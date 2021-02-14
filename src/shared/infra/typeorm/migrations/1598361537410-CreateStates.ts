@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { states } from '../date';
+
 export default class CreateStates1598361537410 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -35,6 +37,13 @@ export default class CreateStates1598361537410 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into('states')
+      .values(states)
+      .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

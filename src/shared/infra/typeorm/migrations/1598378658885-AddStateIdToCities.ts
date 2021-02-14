@@ -5,6 +5,8 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
+// import { cities } from '../date';
+
 export default class AddStateIdToCities1598378658885
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

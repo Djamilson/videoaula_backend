@@ -5,9 +5,6 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-import { cities, person, user } from '../date';
-import usersGroups from '../date/usersGroups';
-
 export default class AddPersonIdAddresses1609959220570
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -31,34 +28,6 @@ export default class AddPersonIdAddresses1609959220570
         onUpdate: 'CASCADE',
       }),
     );
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('persons')
-      .values(person)
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('users')
-      .values(user)
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('users_groups')
-      .values(usersGroups)
-      .execute();
-
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('cities')
-      .values(cities)
-      .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

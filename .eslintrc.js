@@ -22,6 +22,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier', 'eslint-plugin-import-helpers'],
   rules: {
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-empty-function': ['error'],
     'no-unused-expressions': 'off',
     'no-dupe-keys': 2,
     'prettier/prettier': 'error',

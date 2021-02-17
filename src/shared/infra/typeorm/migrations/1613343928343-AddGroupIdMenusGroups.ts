@@ -5,36 +5,33 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-// import { cities } from '../date';
-
-export default class AddStateIdToCities1598378658885
+export default class AddGroupIdMenusGroups1613343928343
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
-      'cities',
+      'menus_groups',
       new TableColumn({
-        name: 'state_id',
+        name: 'group_id',
         type: 'uuid',
         isNullable: true,
       }),
     );
 
     await queryRunner.createForeignKey(
-      'cities',
+      'menus_groups',
       new TableForeignKey({
-        name: 'Cities',
-        columnNames: ['state_id'],
+        name: 'GroupsGroupsMenu',
+        columnNames: ['group_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'states',
+        referencedTableName: 'groups',
         onDelete: 'SET NULL',
-        onUpdate: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('cities', 'Cities');
+    await queryRunner.dropForeignKey('menus_groups', 'GroupsGroupsMenu');
 
-    await queryRunner.dropColumn('cities', 'state_id');
+    await queryRunner.dropColumn('menus_groups', 'group_id');
   }
 }

@@ -22,13 +22,16 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier', 'eslint-plugin-import-helpers'],
   rules: {
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-empty-function': ['error'],
     'no-unused-expressions': 'off',
     'no-dupe-keys': 2,
     'prettier/prettier': 'error',
     'class-methods-use-this': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/camelcase': 'off',
-    
+    'import/prefer-default-export': 'off',
+
     '@typescript-eslint/interface-name-prefix': [
       'error',
       { prefixWithI: 'always' },

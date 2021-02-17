@@ -8,6 +8,7 @@ import {
   Column,
 } from 'typeorm';
 
+import MenusGroups from '@modules/menus/infra/typeorm/entities/GroupsMenus';
 import UsersGroups from '@modules/users/infra/typeorm/entities/UsersGroups';
 
 @Entity('groups')
@@ -17,6 +18,9 @@ class Group {
 
   @OneToMany(() => UsersGroups, user_groups => user_groups.group)
   user_groups: UsersGroups[];
+
+  @OneToMany(() => MenusGroups, menu_groups => menu_groups.group)
+  menu_groups: MenusGroups[];
 
   @Column()
   name: string;

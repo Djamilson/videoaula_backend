@@ -1,5 +1,11 @@
 export default [
   {
+    id: 'bf256cfa-8b0d-4844-919f-70084869dd1f',
+    name: 'role-super-admin',
+    description: 'Super Administrador',
+  },
+
+  {
     id: 'c2d083e9-3194-4251-b813-54fa7ae71a53',
     name: 'role-admin',
     description: 'Administrador',

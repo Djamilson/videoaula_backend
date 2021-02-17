@@ -1,7 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { groups } from '../date';
-
 export default class CreateGroups1598361828852 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -38,14 +36,6 @@ export default class CreateGroups1598361828852 implements MigrationInterface {
         ],
       }),
     );
-
-    // insert data static
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into('groups')
-      .values(groups)
-      .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
